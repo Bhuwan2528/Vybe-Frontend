@@ -1,7 +1,8 @@
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { OutfitMatchDialogService } from '../../../../shared/components/outfit-match-dialog/services/outfit-match.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -11,6 +12,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './product-detail.scss',
 })
 export class ProductDetail {
+
+  outfitMatch = inject(OutfitMatchDialogService)
+
   product = {
     brand: 'VYBE',
     name: 'Essential Oversized Tee',
@@ -86,12 +90,14 @@ export class ProductDetail {
 
   generateOutfit(): void {
     // Frontend demo only: no AI API call yet.
+    this.outfitMatch.open()
     this.outfitGenerated = true;
   }
 
   closeSizeGuide(): void {
     this.showSizeGuide = false;
   }
+
 
   
 }

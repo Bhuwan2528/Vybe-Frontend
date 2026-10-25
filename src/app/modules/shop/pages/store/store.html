@@ -1,0 +1,705 @@
+<div class="store-page">
+
+  <!-- STORE HERO -->
+  <section class="store-hero" aria-labelledby="store-hero-title">
+
+    <img
+      class="store-hero__image"
+      src="/images/store-hero-bg.png"
+      alt=""
+      fetchpriority="high"
+    />
+
+    <div class="store-hero__shade"></div>
+
+    <div class="store-hero__content">
+      <p class="store-hero__eyebrow">THE NEW STREETWEAR ERA</p>
+
+      <h1 id="store-hero-title">
+        SHOP YOUR<br />
+        <span>VYBE.</span>
+      </h1>
+
+      <p class="store-hero__description">
+        Premium streetwear for every mood.<br />
+        Clean styles. Better fits and everyday comfort.
+      </p>
+
+      <a routerLink="/store" class="store-hero__cta">
+        Explore Collection
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="store-hero__signature" aria-hidden="true">
+      Street<br />
+      Style<br />
+      <span>Everyday.</span>
+      <i></i>
+    </div>
+
+    <span class="store-hero__index" aria-hidden="true">
+      VYBE / 001
+    </span>
+  </section>
+
+  <!-- STORE CONTENT -->
+  <main class="store-content">
+
+    <!-- AI SEARCH -->
+    <form
+      class="store-ai-search"
+      (submit)="submitAiSearch(aiQuery.value, $event)"
+    >
+      <label class="store-ai-search__field">
+        <i
+          class="fa-solid fa-wand-magic-sparkles"
+          aria-hidden="true"
+        ></i>
+
+        <input
+          #aiQuery
+          type="search"
+          [value]="aiSearchQuery"
+          placeholder="Ask AI: black oversized shirt under ₹1000"
+          aria-label="Search products with AI"
+        />
+      </label>
+
+      <button
+        type="submit"
+        [disabled]="loading || !aiQuery.value.trim()"
+      >
+        @if (aiSearching) {
+          <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+          Finding...
+        } @else {
+          <i
+            class="fa-solid fa-wand-magic-sparkles"
+            aria-hidden="true"
+          ></i>
+          AI Search
+        }
+      </button>
+
+      @if (aiSearchMode) {
+        <button
+          type="button"
+          class="store-ai-search__clear"
+          (click)="clearAiSearch()"
+        >
+          Clear AI search
+        </button>
+      }
+    </form>
+
+    <!-- TOOLBAR -->
+    <div class="store-toolbar">
+
+      <button
+        type="button"
+        class="store-toolbar__filter-button store-toolbar__filter-button--desktop"
+        (click)="toggleDesktopSidebar()"
+        [attr.aria-expanded]="showSidebar"
+      >
+        <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+        <span>Filters</span>
+
+        <span class="store-toolbar__filter-count">
+          {{ activeFilterCount }}
+        </span>
+      </button>
+
+      <button
+        type="button"
+        class="store-toolbar__filter-button store-toolbar__filter-button--mobile"
+        (click)="openMobileFilters()"
+        aria-label="Open product filters"
+      >
+        <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+        Filters
+
+        <span class="store-toolbar__filter-count">
+          {{ activeFilterCount }}
+        </span>
+      </button>
+
+      <p class="store-toolbar__results">
+        Showing
+        <strong>{{ startItem }}–{{ endItem }}</strong>
+        of
+        <strong>{{ filterResultCount }}</strong>
+        products
+      </p>
+
+      <label class="store-toolbar__sort">
+        <span>Sort by</span>
+
+        <select [value]="sortBy" (change)="onSortChange($event)">
+          <option value="newest">Newest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </label>
+
+    </div>
+
+    <div
+      class="store-layout"
+      [class.store-layout--sidebar-hidden]="!showSidebar"
+    >
+
+      <!-- MOBILE DRAWER BACKDROP -->
+      @if (mobileFiltersOpen) {
+        <button
+          type="button"
+          class="store-drawer-backdrop"
+          aria-label="Close filters"
+          (click)="closeMobileFilters()"
+        ></button>
+      }
+
+      <!-- FILTER SIDEBAR -->
+      <aside
+        class="store-sidebar"
+        [class.store-sidebar--collapsed]="!showSidebar"
+        [class.store-sidebar--mobile-open]="mobileFiltersOpen"
+        aria-label="Product filters"
+      >
+
+        <!-- SIDEBAR HEADER -->
+        <div class="store-sidebar__header">
+          <div>
+            <h2>Filters</h2>
+            <p>Find your perfect fit.</p>
+          </div>
+
+          <button
+            type="button"
+            class="store-sidebar__clear"
+            (click)="clearAllFilters()"
+          >
+            Clear all
+          </button>
+
+          <button
+            type="button"
+            class="store-sidebar__close"
+            aria-label="Close filters"
+            (click)="closeMobileFilters()"
+          >
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- CATEGORY -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('category')"
+            [attr.aria-expanded]="filterSections.category"
+          >
+            <span>Category</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.category"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.category) {
+            <div class="filter-group__body">
+
+              @for (category of categoryOptions; track category.value) {
+                <label class="filter-option">
+                  <input
+                    type="radio"
+                    name="storeCategory"
+                    [checked]="activeCategory === category.value"
+                    (change)="selectCategory(category.value)"
+                  />
+
+                  <span class="filter-option__label">
+                    {{ category.label }}
+                  </span>
+                </label>
+              }
+
+            </div>
+          }
+        </section>
+
+        <!-- SUBCATEGORY -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('subcategory')"
+            [attr.aria-expanded]="filterSections.subcategory"
+          >
+            <span>Subcategory</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.subcategory"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.subcategory) {
+            <div class="filter-group__body">
+
+              @for (
+                subcategory of visibleSubcategories;
+                track subcategory.id
+              ) {
+                <label class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedSubcategories.includes(subcategory.id)"
+                    (change)="toggleSelection(selectedSubcategories, subcategory.id)"
+                  />
+
+                  <span class="filter-option__label">
+                    {{ subcategory.name }}
+                  </span>
+                </label>
+              }
+
+            </div>
+          }
+        </section>
+
+        <!-- PRICE -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('price')"
+            [attr.aria-expanded]="filterSections.price"
+          >
+            <span>Price Range</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.price"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.price) {
+            <div class="filter-group__body">
+
+              <div class="filter-price__summary">
+                <span>
+                  ₹{{ minPrice | number:'1.0-0' }}
+                </span>
+
+                <span class="filter-price__separator"></span>
+
+                <span>
+                  ₹{{ maxPrice | number:'1.0-0' }}
+                </span>
+              </div>
+
+              <div class="filter-price__inputs">
+                <label>
+                  <span>Min ₹</span>
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="5000"
+                    [value]="minPrice"
+                    (change)="setPrice('min', $event)"
+                    aria-label="Minimum price"
+                  />
+                </label>
+
+                <label>
+                  <span>Max ₹</span>
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="5000"
+                    [value]="maxPrice"
+                    (change)="setPrice('max', $event)"
+                    aria-label="Maximum price"
+                  />
+                </label>
+              </div>
+
+            </div>
+          }
+        </section>
+
+        <!-- COLOR -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('color')"
+            [attr.aria-expanded]="filterSections.color"
+          >
+            <span>Color</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.color"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.color) {
+            <div class="filter-group__body">
+              <div class="filter-color__grid">
+
+                @for (color of colors; track color.name) {
+                  <button
+                    type="button"
+                    class="filter-color__swatch"
+                    [class.is-selected]="selectedColors.includes(color.name)"
+                    [style.--swatch-color]="color.hex"
+                    [attr.aria-pressed]="selectedColors.includes(color.name)"
+                    [attr.aria-label]="color.label"
+                    [title]="color.label"
+                    (click)="toggleSelection(selectedColors, color.name)"
+                  >
+                    @if (selectedColors.includes(color.name)) {
+                      <i
+                        class="fa-solid fa-check"
+                        aria-hidden="true"
+                      ></i>
+                    }
+                  </button>
+                }
+
+              </div>
+            </div>
+          }
+        </section>
+
+        <!-- SIZE -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('size')"
+            [attr.aria-expanded]="filterSections.size"
+          >
+            <span>Size</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.size"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.size) {
+            <div class="filter-group__body">
+              <div class="filter-size__grid">
+
+                @for (size of sizes; track size) {
+                  <button
+                    type="button"
+                    class="filter-size__button"
+                    [class.is-selected]="selectedSizes.includes(size)"
+                    [attr.aria-pressed]="selectedSizes.includes(size)"
+                    (click)="toggleSelection(selectedSizes, size)"
+                  >
+                    {{ size }}
+                  </button>
+                }
+
+              </div>
+            </div>
+          }
+        </section>
+
+        <!-- FIT -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('fit')"
+            [attr.aria-expanded]="filterSections.fit"
+          >
+            <span>Fit</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.fit"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.fit) {
+            <div class="filter-group__body">
+
+              @for (fit of fits; track fit) {
+                <label class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedFits.includes(fit)"
+                    (change)="toggleSelection(selectedFits, fit)"
+                  />
+
+                  <span class="filter-option__label">
+                    {{ formatFilterLabel(fit) }}
+                  </span>
+                </label>
+              }
+
+            </div>
+          }
+        </section>
+
+        <!-- STYLE -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('style')"
+            [attr.aria-expanded]="filterSections.style"
+          >
+            <span>Style</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.style"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.style) {
+            <div class="filter-group__body">
+
+              @for (style of styles; track style) {
+                <label class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedStyles.includes(style)"
+                    (change)="toggleSelection(selectedStyles, style)"
+                  />
+
+                  <span class="filter-option__label">
+                    {{ formatFilterLabel(style) }}
+                  </span>
+                </label>
+              }
+
+            </div>
+          }
+        </section>
+
+        <!-- PATTERN -->
+        <section class="filter-group">
+          <button
+            type="button"
+            class="filter-group__heading"
+            (click)="toggleSection('pattern')"
+            [attr.aria-expanded]="filterSections.pattern"
+          >
+            <span>Pattern</span>
+
+            <i
+              class="fa-solid fa-chevron-down"
+              [class.is-rotated]="filterSections.pattern"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (filterSections.pattern) {
+            <div class="filter-group__body">
+
+              @for (pattern of patterns; track pattern) {
+                <label class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedPatterns.includes(pattern)"
+                    (change)="toggleSelection(selectedPatterns, pattern)"
+                  />
+
+                  <span class="filter-option__label">
+                    {{ formatFilterLabel(pattern) }}
+                  </span>
+                </label>
+              }
+
+            </div>
+          }
+        </section>
+
+        <!-- APPLY FILTERS -->
+        <button
+          type="button"
+          class="store-sidebar__apply"
+          (click)="applyMobileFilters()"
+        >
+          Show {{ filterResultCount }} Products
+
+          <i
+            class="fa-solid fa-arrow-right"
+            aria-hidden="true"
+          ></i>
+        </button>
+
+      </aside>
+
+      <!-- PRODUCT CATALOG -->
+      <section class="store-catalog" aria-label="Products">
+
+        <!-- ERROR STATE -->
+        @if (errorMessage && !loading) {
+          <div class="store-empty" role="alert">
+
+            <span class="store-empty__icon">
+              <i
+                class="fa-solid fa-circle-exclamation"
+                aria-hidden="true"
+              ></i>
+            </span>
+
+            <h2>Something went wrong</h2>
+            <p>{{ errorMessage }}</p>
+
+            <button
+              type="button"
+              class="store-empty__button"
+              (click)="aiSearchMode ? submitAiSearch(aiSearchQuery, $event) : loadProducts()"
+            >
+              Try again
+            </button>
+
+          </div>
+        }
+
+        <!-- LOADING STATE -->
+        @else if (loading) {
+          <div
+            class="store-empty store-empty--loading"
+            role="status"
+            aria-live="polite"
+          >
+            <span class="store-empty__icon">
+              <i
+                class="fa-solid fa-spinner fa-spin"
+                aria-hidden="true"
+              ></i>
+            </span>
+
+            <h2>
+              {{ aiSearching ? 'AI is finding your style' : 'Loading products' }}
+            </h2>
+
+            <p>
+              Please wait while we fetch the latest VYBE collection.
+            </p>
+          </div>
+        }
+
+        <!-- PRODUCT GRID -->
+        @else if (visibleProducts.length) {
+          <div class="store-catalog__grid">
+
+            @for (product of visibleProducts; track product.id) {
+              <app-product
+                [product]="product"
+                (addToCart)="handleAddToCart($event)"
+              />
+            }
+
+          </div>
+
+          <!-- PAGINATION -->
+          @if (totalPages > 1) {
+            <nav
+              class="store-pagination"
+              aria-label="Product pages"
+            >
+
+              <button
+                type="button"
+                class="store-pagination__arrow"
+                aria-label="Previous page"
+                [disabled]="currentPage === 1"
+                (click)="changePage(currentPage - 1)"
+              >
+                <i
+                  class="fa-solid fa-chevron-left"
+                  aria-hidden="true"
+                ></i>
+              </button>
+
+              @for (page of paginationPages; track $index) {
+                @if (page === '…') {
+                  <span class="store-pagination__ellipsis">
+                    …
+                  </span>
+                } @else {
+                  <button
+                    type="button"
+                    class="store-pagination__page"
+                    [class.is-active]="currentPage === page"
+                    [attr.aria-current]="currentPage === page ? 'page' : null"
+                    (click)="changePage(page)"
+                  >
+                    {{ page }}
+                  </button>
+                }
+              }
+
+              <button
+                type="button"
+                class="store-pagination__arrow"
+                aria-label="Next page"
+                [disabled]="currentPage === totalPages"
+                (click)="changePage(currentPage + 1)"
+              >
+                <i
+                  class="fa-solid fa-chevron-right"
+                  aria-hidden="true"
+                ></i>
+              </button>
+
+            </nav>
+          }
+        }
+
+        <!-- EMPTY STATE -->
+        @else {
+          <div class="store-empty">
+
+            <span class="store-empty__icon">
+              <i
+                class="fa-solid fa-magnifying-glass"
+                aria-hidden="true"
+              ></i>
+            </span>
+
+            <h2>No products found</h2>
+
+            <p>
+              Try changing your filters to discover more VYBE styles.
+            </p>
+
+            <button
+              type="button"
+              class="store-empty__button"
+              (click)="clearAllFilters()"
+            >
+              Clear Filters
+            </button>
+
+          </div>
+        }
+
+      </section>
+    </div>
+  </main>
+</div>

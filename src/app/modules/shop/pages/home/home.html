@@ -141,59 +141,86 @@
 
 
 <section class="shop-categories" aria-labelledby="category-title">
+  <div class="shop-categories__container">
 
-  <div class="shop-categories__heading">
-    <h2 id="category-title">Shop by Category</h2>
+    <!-- Section Header -->
+    <header class="shop-categories__heading">
+      <div class="shop-categories__intro">
 
-    <a routerLink="/shop" class="shop-categories__view-all">
-      View All
-      <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-    </a>
-  </div>
+        <p class="shop-categories__eyebrow">
+          <span class="shop-categories__eyebrow-dot"></span>
+          EXPLORE THE VYBE
+        </p>
 
-  <div
-    #categoryTrack
-    class="shop-categories__track"
-    role="region"
-    aria-label="Shop product categories"
-    tabindex="0"
-    (mouseenter)="pauseCategoryAutoScroll()"
-    (mouseleave)="resumeCategoryAutoScroll()"
-    (touchstart)="pauseCategoryAutoScroll()"
-    (touchend)="resumeCategoryAutoScroll()"
-  >
-    @for (category of categories; track category.slug) {
-      <a
-        class="shop-category-card"
-        [routerLink]="['/shop']"
-        [queryParams]="{ subcategory: category.slug }"
-        [attr.aria-label]="'Shop ' + category.name"
-      >
-        <div class="shop-category-card__image-wrap">
+        <h2 id="category-title">
+          Shop by <span>Category.</span>
+        </h2>
 
-          <img
-            [src]="category.image"
-            [alt]="category.name"
-            class="shop-category-card__image"
-            loading="lazy"
-            draggable="false"
-          />
+        <p class="shop-categories__description">
+          Find your fit. Discover the styles that define you.
+        </p>
 
-          <span class="shop-category-card__label">
-            {{ category.name }}
-          </span>
+      </div>
 
-          <span class="shop-category-card__arrow" aria-hidden="true">
-            <i class="fa-solid fa-arrow-right"></i>
-          </span>
-
-        </div>
+      <a routerLink="/shop" class="shop-categories__view-all">
+        <span>View All Categories</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
-    }
+    </header>
+
+    <!-- Category Slider -->
+    <div
+      #categoryTrack
+      class="shop-categories__track"
+      role="region"
+      aria-label="Shop product categories"
+      tabindex="0"
+      (mouseenter)="pauseCategoryAutoScroll()"
+      (mouseleave)="resumeCategoryAutoScroll()"
+      (touchstart)="pauseCategoryAutoScroll()"
+      (touchend)="resumeCategoryAutoScroll()"
+    >
+      @for (subcategory of subCategories; track subcategory.id) {
+        <a
+          class="shop-category-card"
+          [routerLink]="['/shop']"
+          [queryParams]="{ subcategory: subcategory.id }"
+          [attr.aria-label]="'Shop ' + subcategory.name"
+        >
+          <div class="shop-category-card__image-wrap">
+
+            <img
+              [src]="subcategory.imageUrl"
+              [alt]="subcategory.name"
+              class="shop-category-card__image"
+              loading="lazy"
+              draggable="false"
+            />
+
+            <div class="shop-category-card__overlay"></div>
+
+            <span class="shop-category-card__label">
+              {{ subcategory.name }}
+            </span>
+
+            <span class="shop-category-card__arrow" aria-hidden="true">
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+          </div>
+        </a>
+      }
+    </div>
+
+    <!-- Editorial Footer -->
+    <div class="shop-categories__footer" aria-hidden="true">
+      <span></span>
+      <p>YOUR STYLE. YOUR RULES.</p>
+      <span></span>
+    </div>
+
   </div>
-
 </section>
-
 
 
 
@@ -239,7 +266,7 @@
 
     <div class="ai-style__actions">
 
-      <!-- Search input -->
+      <!-- AI Search Input -->
       <form
         class="ai-style__search"
         role="search"
@@ -263,24 +290,23 @@
           type="submit"
           class="ai-style__search-submit"
           aria-label="Search"
+          [disabled]="isAiSearching()"
         >
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          <i
+            [class.fa-arrow-right]="!isAiSearching()"
+            [class.fa-spinner]="isAiSearching()"
+            [class.fa-spin]="isAiSearching()"
+            class="fa-solid"
+            aria-hidden="true"
+          ></i>
         </button>
       </form>
-
-      <!-- Image upload -->
-      <input
-        #aiImageInput
-        type="file"
-        class="ai-style__file-input"
-        accept="image/*"
-        (change)="onAiImageSelected($event)"
-      />
 
       <button
         type="button"
         class="ai-style__action-button"
-        (click)="aiImageInput.click()"
+        (click)="openAiDialog()"
+         
       >
         <i class="fa-regular fa-image" aria-hidden="true"></i>
         <span>Upload Image</span>
@@ -290,7 +316,6 @@
       <button
         type="button"
         class="ai-style__action-button"
-        (click)="tryAiExample(aiQuery)"
       >
         <i class="fa-regular fa-lightbulb" aria-hidden="true"></i>
         <span>Try Example</span>
@@ -306,5 +331,164 @@
       {{ aiSearchMessage }}
     </p>
 
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- Featured Products -->
+<section class="featured-products" aria-labelledby="featured-title">
+  <div class="featured-products__container">
+
+    <div class="featured-products__header">
+      <div class="featured-products__intro">
+
+        <p class="featured-products__eyebrow">
+          <span class="featured-products__dot"></span>
+          THE VYBE EDIT
+        </p>
+
+        <h2 id="featured-title">
+          Featured <span>Products.</span>
+        </h2>
+
+        <p class="featured-products__description">
+          Fresh fits. Everyday essentials. Pieces that speak your style.
+        </p>
+
+      </div>
+
+      <button class="featured-products__view-all" type="button">
+        View All Products
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+
+    <div class="featured-products__grid">
+      @for (product of featuredProducts; track product.id) {
+        <app-product [product]="product" />
+      }
+    </div>
+
+    <div class="featured-products__footer">
+      <span></span>
+      <p>FIND YOUR FIT. OWN YOUR VYBE.</p>
+      <span></span>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- HOME COLLECTIONS -->
+<section class="home-collections" aria-label="Explore VYBE collections">
+  <div class="home-collections__container">
+
+    <!-- Main Collection Banner -->
+    <a
+      routerLink="/shop"
+      class="collection-banner collection-banner--main"
+      aria-label="Explore the VYBE streetwear collection"
+    >
+      <div class="collection-banner__content">
+        <span class="collection-banner__eyebrow">
+          THE VYBE EDIT
+        </span>
+
+        <h2>
+          THE<br />
+          STREETWEAR<br />
+          COLLECTION
+        </h2>
+
+        <p>Minimal. Bold. Timeless.</p>
+
+        <span class="collection-banner__cta">
+          Explore Now
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </span>
+      </div>
+
+      <div class="collection-banner__signature" aria-hidden="true">
+        <i class="fa-solid fa-globe"></i>
+        <span>Made<br />For Your<br /><strong>Vibe.</strong></span>
+      </div>
+
+      <span class="collection-banner__index" aria-hidden="true">
+        01 / COLLECTION
+      </span>
+    </a>
+
+    <!-- Secondary Banners -->
+    <div class="home-collections__secondary">
+
+      <!-- New Arrivals -->
+      <a
+        routerLink="/shop"
+        class="collection-banner collection-banner--arrivals"
+        aria-label="Explore new arrivals"
+      >
+        <div class="collection-banner__content">
+          <span class="collection-banner__eyebrow">
+            JUST DROPPED
+          </span>
+
+          <h3>New Arrivals<span>.</span></h3>
+
+          <p>Fresh styles. New vibes.</p>
+
+          <span class="collection-banner__cta">
+            Explore New
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <span class="collection-banner__index" aria-hidden="true">
+          02
+        </span>
+      </a>
+
+      <!-- Best Sellers -->
+      <a
+        routerLink="/shop"
+        class="collection-banner collection-banner--bestsellers"
+        aria-label="Explore best sellers"
+      >
+        <div class="collection-banner__content">
+          <span class="collection-banner__eyebrow">
+            THE COMMUNITY FAVOURITES
+          </span>
+
+          <h3>Best Sellers<span>.</span></h3>
+
+          <p>Most loved by our community.</p>
+
+          <span class="collection-banner__cta">
+            Shop Best Sellers
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <span class="collection-banner__index" aria-hidden="true">
+          03
+        </span>
+      </a>
+
+    </div>
   </div>
 </section>

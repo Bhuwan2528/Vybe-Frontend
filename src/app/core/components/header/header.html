@@ -42,23 +42,20 @@
     <!-- Desktop navigation -->
     <nav class="vybe-header__nav" aria-label="Main navigation">
       <a
-        routerLink="/shop"
-        [queryParams]="{ category: 'Men' }"
-      >Men</a>
+        routerLink="/"
+      >Home</a>
 
       <a
         routerLink="/shop"
-        [queryParams]="{ sort: 'newest' }"
-      >New In</a>
+      >Shop</a>
 
       <a
-        routerLink="/account"
-        [queryParams]="{ tab: 'collections' }"
-      >Collections</a>
+        routerLink="/"
+      >About</a>
 
       <a routerLink="/outfit-matcher">AI Stylist</a>
 
-      <a routerLink="/about">About</a>
+      <a routerLink="/">Contact</a>
     </nav>
 
     <!-- Desktop search -->
@@ -68,7 +65,7 @@
       (ngSubmit)="submitSearch()"
     >
       <i
-        class="fa-solid fa-magnifying-glass vybe-search__icon"
+        class="fa-solid fa-wand-magic-sparkles vybe-search__icon"
         aria-hidden="true"
       ></i>
 
@@ -76,18 +73,22 @@
         type="search"
         name="desktopSearch"
         [(ngModel)]="searchQuery"
-        placeholder="Search for shirts, cargos, hoodies..."
-        aria-label="Search products"
+        placeholder="Ask AI: black oversized shirt under ₹1000..."
+        aria-label="Search products with AI"
         autocomplete="off"
       />
 
       <button
         type="submit"
         class="vybe-search__submit"
-        aria-label="Submit search"
+        aria-label="Search with AI"
         [disabled]="searchSubmitting || !searchQuery.trim()"
       >
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        @if (searchSubmitting) {
+          <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+        } @else {
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        }
       </button>
     </form>
 
@@ -240,29 +241,26 @@
 
     <nav class="vybe-mobile-nav__links">
       <a
-        routerLink="/shop"
-        [queryParams]="{ category: 'Men' }"
+        routerLink="/"
         data-bs-dismiss="offcanvas"
       >
-        <span>Men</span>
+        <span>Home</span>
         <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
 
       <a
         routerLink="/shop"
-        [queryParams]="{ sort: 'newest' }"
         data-bs-dismiss="offcanvas"
       >
-        <span>New In</span>
+        <span>Shop</span>
         <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
 
       <a
-        routerLink="/account"
-        [queryParams]="{ tab: 'collections' }"
+        routerLink="/about"
         data-bs-dismiss="offcanvas"
       >
-        <span>Collections</span>
+        <span>About</span>
         <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
 
@@ -275,10 +273,10 @@
       </a>
 
       <a
-        routerLink="/about"
+        routerLink="/"
         data-bs-dismiss="offcanvas"
       >
-        <span>About</span>
+        <span>Contact</span>
         <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
     </nav>

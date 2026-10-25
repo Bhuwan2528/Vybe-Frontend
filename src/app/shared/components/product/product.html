@@ -1,0 +1,92 @@
+<article class="product-card">
+
+  <!-- Product Image -->
+  <div class="product-card__image-wrap">
+    <img
+      class="product-card__image"
+      [src]="productData.imageUrl || fallbackImage"
+      [alt]="productData.name"
+    />
+
+    @if (productData.tag) {
+      <span class="product-card__badge">
+        {{ productData.tag }}
+      </span>
+    }
+
+    <span class="product-card__wishlist" aria-hidden="true">
+      <i class="fa-regular fa-heart"></i>
+    </span>
+
+    <span class="product-card__image-label">
+      {{ productData.brand || 'VYBE ESSENTIALS' }}
+    </span>
+  </div>
+
+  <!-- Product Details -->
+  <div class="product-card__body">
+
+    <div class="product-card__category">
+      {{ productData.fit }}
+    </div>
+
+    <h3 class="product-card__title">
+      {{ productData.name }}
+    </h3>
+
+    @if (productData.description) {
+      <p class="product-card__description">
+        {{ productData.description }}
+      </p>
+    }
+
+    <!-- Pricing -->
+    <div class="product-card__pricing">
+      <div class="product-card__price-group">
+        <span class="product-card__price">
+          {{ productData.price | currency:'INR':'symbol':'1.0-0':'en-IN' }}
+        </span>
+
+        @if (discountPercent > 0 && productData.originalPrice) {
+          <span class="product-card__old-price">
+            {{ productData.originalPrice | currency:'INR':'symbol':'1.0-0':'en-IN' }}
+          </span>
+        }
+      </div>
+
+      @if (discountPercent > 0) {
+        <span class="product-card__discount">
+          {{ discountPercent }}% OFF
+        </span>
+      }
+    </div>
+
+    <!-- Rating -->
+    @if (productData.rating !== null && productData.rating !== '') {
+      <div class="product-card__rating">
+        <i class="fa-solid fa-star" aria-hidden="true"></i>
+
+        <span class="product-card__rating-value">
+          {{ productData.rating }}
+        </span>
+
+        @if (productData.reviews !== null) {
+          <span class="product-card__reviews">
+            ({{ productData.reviews }} reviews)
+          </span>
+        }
+      </div>
+    }
+
+    <!-- Add to Cart -->
+    <button
+      type="button"
+      class="product-card__cart-btn"
+      (click)="onAddToCart()"
+    >
+      <span>Add to Cart</span>
+      <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+    </button>
+
+  </div>
+</article>

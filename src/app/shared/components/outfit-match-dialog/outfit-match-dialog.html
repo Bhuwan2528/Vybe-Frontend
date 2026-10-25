@@ -1,0 +1,355 @@
+<section class="match-dialog">
+
+  <!-- HEADER -->
+  <header class="dialog-header">
+
+    <div class="brand-mark">✦</div>
+
+    <div class="header-copy">
+      <span class="eyebrow">VYBE / AI STUDIO</span>
+
+      <h2>
+        {{ isProcessing ? 'Finding Your Perfect Match' : 'Find Your Perfect Match' }}
+      </h2>
+
+      <p>
+        {{
+          isProcessing
+            ? 'Our AI stylist is putting your look together.'
+            : 'Get AI outfit suggestions that perfectly match this product.'
+        }}
+      </p>
+    </div>
+
+    <button
+      class="icon-button"
+      type="button"
+      aria-label="Close dialog"
+      (click)="close()"
+    >
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+
+  </header>
+
+  @if (!isProcessing) {
+
+    <!-- FORM VIEW -->
+    <div class="form-content">
+
+      <!-- STATIC PRODUCT PREVIEW -->
+      <div class="starting-product">
+
+        <div class="starting-product__image">
+          <svg viewBox="0 0 80 90" aria-hidden="true">
+            <path
+              d="M25 13 34 8h12l9 5 13 7-8 17-9-5v43H29V32l-9 5-8-17z"
+              fill="#20221f"
+              stroke="#10110f"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M34 8c1 7 11 7 12 0"
+              fill="none"
+              stroke="#62645e"
+              stroke-width="2"
+            />
+            <text
+              x="40"
+              y="51"
+              text-anchor="middle"
+              fill="#f5f2ea"
+              font-size="7"
+              font-weight="bold"
+            >
+              VYBE
+            </text>
+          </svg>
+        </div>
+
+        <div class="starting-product__info">
+          <span class="mini-label">STARTING PIECE</span>
+          <strong>Urban Drift Oversized Tee</strong>
+          <span>Black · 279 GSM</span>
+        </div>
+
+        <strong class="starting-product__price">₹799</strong>
+
+      </div>
+
+      <!-- OCCASION -->
+      <div class="form-section">
+
+        <div class="section-heading">
+          <label>What's the occasion?</label>
+          <span>Choose one</span>
+        </div>
+
+        <div class="choice-grid" role="radiogroup" aria-label="Occasion">
+
+          <label class="choice-button">
+            <input type="radio" name="occasion" value="College" checked />
+            <span>College</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="occasion" value="Date" />
+            <span>Date</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="occasion" value="Party" />
+            <span>Party</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="occasion" value="Daily Wear" />
+            <span>Daily Wear</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="occasion" value="Travel" />
+            <span>Travel</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="occasion" value="Formal" />
+            <span>Formal</span>
+          </label>
+
+        </div>
+
+      </div>
+
+      <!-- STYLE -->
+      <div class="form-section">
+
+        <div class="section-heading">
+          <label>Choose your style</label>
+          <span>Pick your vibe</span>
+        </div>
+
+        <div class="choice-grid" role="radiogroup" aria-label="Style">
+
+          <label class="choice-button">
+            <input type="radio" name="style" value="Streetwear" checked />
+            <span>Streetwear</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="style" value="Minimal Classy" />
+            <span>Minimal Classy</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="style" value="Casual" />
+            <span>Casual</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="style" value="Trendy" />
+            <span>Trendy</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="style" value="Smart Casual" />
+            <span>Smart Casual</span>
+          </label>
+
+          <label class="choice-button">
+            <input type="radio" name="style" value="Aesthetic" />
+            <span>Aesthetic</span>
+          </label>
+
+        </div>
+
+      </div>
+
+      <!-- BUDGET -->
+      <div class="form-section">
+
+        <div class="section-heading">
+          <label for="outfit-budget">Budget (optional)</label>
+          <span>INR ₹</span>
+        </div>
+
+        <div class="budget-input">
+          <span>₹</span>
+
+          <input
+            id="outfit-budget"
+            type="number"
+            min="1"
+            max="100000"
+            placeholder="e.g. 2000"
+          />
+        </div>
+
+      </div>
+
+      <!-- ADDITIONAL PREFERENCES -->
+      <div class="form-section">
+
+        <div class="section-heading">
+          <label for="outfit-message">Anything else?</label>
+          <span>Optional</span>
+        </div>
+
+        <textarea
+          id="outfit-message"
+          class="preference-textarea"
+          rows="3"
+          maxlength="500"
+          placeholder="e.g. Oversized fit, neutral colours, white sneakers..."
+        ></textarea>
+
+      </div>
+
+      <!-- ACTIONS -->
+      <footer class="dialog-actions">
+
+        <button
+          class="vybe-btn vybe-btn-outline cancel-button"
+          type="button"
+          (click)="close()"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="vybe-btn vybe-btn-primary next-button"
+          type="button"
+          (click)="submit()"
+        >
+          Show Outfit
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+
+      </footer>
+
+    </div>
+
+  } @else {
+
+    <!-- PROCESSING VIEW -->
+    <div class="processing-view">
+
+      <!-- PRODUCT SUMMARY -->
+      <div class="processing-product">
+
+        <div class="processing-product__image">
+          <svg viewBox="0 0 80 90" aria-hidden="true">
+            <path
+              d="M25 13 34 8h12l9 5 13 7-8 17-9-5v43H29V32l-9 5-8-17z"
+              fill="#20221f"
+              stroke="#10110f"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M34 8c1 7 11 7 12 0"
+              fill="none"
+              stroke="#62645e"
+              stroke-width="2"
+            />
+            <text
+              x="40"
+              y="51"
+              text-anchor="middle"
+              fill="#f5f2ea"
+              font-size="7"
+              font-weight="bold"
+            >
+              VYBE
+            </text>
+          </svg>
+        </div>
+
+        <div class="processing-product__info">
+          <span class="mini-label">STYLING AROUND</span>
+          <strong>Urban Drift Oversized Tee</strong>
+          <small>Black · ₹799</small>
+        </div>
+
+      </div>
+
+      <!-- ANIMATED AI ORBIT -->
+      <div class="ai-animation" aria-hidden="true">
+
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="orbit orbit-three"></div>
+
+        <div class="orbit-core">
+          <span>✦</span>
+        </div>
+
+        <span class="ai-spark ai-spark-one">✳</span>
+        <span class="ai-spark ai-spark-two">✦</span>
+
+      </div>
+
+      <div class="processing-heading">
+
+        <span class="processing-eyebrow">VYBE AI STYLIST</span>
+
+        <h3>
+          Finding your perfect outfit<span class="dots">...</span>
+        </h3>
+
+        <p class="processing-description">
+          Our AI is analyzing your preferences and putting together
+          a look that works for your vibe.
+        </p>
+
+      </div>
+
+      <!-- CSS-ONLY PROGRESS -->
+      <div class="progress-list" role="status" aria-live="polite">
+
+        <div class="progress-row step-one">
+          <span class="status"></span>
+          <span>Analyzing your style preferences</span>
+          <span class="spinner"></span>
+        </div>
+
+        <div class="progress-row step-two">
+          <span class="status"></span>
+          <span>Finding matching products</span>
+          <span class="spinner"></span>
+        </div>
+
+        <div class="progress-row step-three">
+          <span class="status status-processing"></span>
+          <span>Creating your outfit collection</span>
+          <span class="spinner"></span>
+        </div>
+
+      </div>
+
+      <div class="processing-note">
+        <span class="processing-note__icon">
+          <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
+        </span>
+
+        <p>
+          This may take a few seconds while we find the best matching pieces
+          for you.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="backToForm()"
+      >
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Back to preferences
+      </button>
+
+    </div>
+
+  }
+
+</section>

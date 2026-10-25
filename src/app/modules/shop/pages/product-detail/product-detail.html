@@ -1,105 +1,132 @@
-
 <main class="product-page">
 
   <!-- BREADCRUMB -->
-
   <nav class="product-breadcrumb" aria-label="Breadcrumb">
     <a routerLink="/">Home</a>
-    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    <i class="fa-solid fa-chevron-right"></i>
 
     <a routerLink="/shop">Men</a>
-    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    <i class="fa-solid fa-chevron-right"></i>
 
     <a routerLink="/shop" [queryParams]="{ category: 'T-Shirts' }">
       T-Shirts
     </a>
-    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
 
+    <i class="fa-solid fa-chevron-right"></i>
     <span>{{ product.name }}</span>
   </nav>
 
-
   <!-- PRODUCT DETAILS -->
-
   <section class="product-main">
 
-    <!-- SINGLE PRODUCT IMAGE -->
+    <!-- PRODUCT IMAGE -->
+    <div class="product-visual">
 
-    <div class="product-image">
+      <div class="product-image">
+        <img
+          [src]="product.image"
+          [alt]="product.name"
+          fetchpriority="high"
+        />
 
-      <img
-        [src]="product.image"
-        [alt]="product.name"
-        fetchpriority="high"
-      />
+        <span class="product-image__badge">
+          <i class="fa-solid fa-crown"></i>
+          {{ product.badge }}
+        </span>
 
-      <span class="product-image__badge">
-        <i class="fa-solid fa-crown" aria-hidden="true"></i>
-        {{ product.badge }}
-      </span>
+        <button
+          type="button"
+          class="product-image__wishlist"
+          [class.is-active]="isWishlisted"
+          [attr.aria-pressed]="isWishlisted"
+          [attr.aria-label]="isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'"
+          (click)="toggleWishlist()"
+        >
+          <i
+            [class.fa-solid]="isWishlisted"
+            [class.fa-regular]="!isWishlisted"
+            class="fa-heart"
+          ></i>
+        </button>
 
-      <button
-        type="button"
-        class="product-image__wishlist"
-        [class.is-active]="isWishlisted"
-        [attr.aria-pressed]="isWishlisted"
-        [attr.aria-label]="isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'"
-        (click)="toggleWishlist()"
-      >
-        <i
-          [class.fa-solid]="isWishlisted"
-          [class.fa-regular]="!isWishlisted"
-          class="fa-heart"
-          aria-hidden="true"
-        ></i>
-      </button>
+        <span class="product-image__caption">
+          VYBE / PREMIUM STREETWEAR
+        </span>
+      </div>
+
+      <div class="product-visual-note">
+        <span class="product-visual-note__icon">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </span>
+
+        <div>
+          <strong>Made for your everyday VYBE.</strong>
+          <p>Minimal design. Maximum versatility.</p>
+        </div>
+      </div>
 
     </div>
 
-
     <!-- PRODUCT INFORMATION -->
-
     <div class="product-info">
 
-      <p class="product-info__brand">{{ product.brand }}</p>
+      <p class="product-info__eyebrow">
+        <span class="product-info__eyebrow-line"></span>
+        {{ product.brand }}
+        <span class="product-info__category">/ STREETWEAR</span>
+      </p>
 
       <h1>{{ product.name }}</h1>
 
+      <!-- RATING -->
       <div class="product-rating">
-        <i class="fa-solid fa-star" aria-hidden="true"></i>
+        <i class="fa-solid fa-star"></i>
+
         <strong>{{ product.rating }}</strong>
+
         <span>({{ product.reviews }} reviews)</span>
 
         <span class="product-rating__badge">
-          <i class="fa-solid fa-crown" aria-hidden="true"></i>
+          <i class="fa-solid fa-crown"></i>
           {{ product.badge }}
         </span>
       </div>
 
+      <!-- PRICE -->
       <div class="product-price">
         <strong>₹{{ product.price }}</strong>
-        <del>₹{{ product.originalPrice.toLocaleString('en-IN') }}</del>
+
+        <del>
+          ₹{{ product.originalPrice.toLocaleString('en-IN') }}
+        </del>
+
         <span>{{ product.discount }}</span>
       </div>
 
-      <p class="product-tax">Inclusive of all taxes</p>
+      <p class="product-tax">
+        <i class="fa-solid fa-circle-check"></i>
+        Inclusive of all taxes
+      </p>
 
       <p class="product-description">
         {{ product.description }}
       </p>
 
+      <div class="product-divider"></div>
 
       <!-- SIZE SELECTION -->
-
       <div class="product-size-heading">
-        <span>Size</span>
+        <div>
+          <strong>Choose your size</strong>
+          <span>Pick the fit that feels right.</span>
+        </div>
 
         <button
           type="button"
           class="product-size-guide"
           (click)="showSizeGuide = true"
         >
-          <i class="fa-solid fa-ruler-combined" aria-hidden="true"></i>
+          <i class="fa-solid fa-ruler-combined"></i>
           Size Guide
         </button>
       </div>
@@ -118,13 +145,11 @@
         }
       </div>
 
-
       <!-- QUANTITY AND STOCK -->
-
       <div class="product-order-row">
 
         <div class="product-quantity">
-          <span class="product-order-label">Quantity</span>
+          <span class="product-field-label">Quantity</span>
 
           <div class="product-quantity__control">
             <button
@@ -133,7 +158,7 @@
               [disabled]="quantity <= 1"
               (click)="decreaseQuantity()"
             >
-              <i class="fa-solid fa-minus" aria-hidden="true"></i>
+              <i class="fa-solid fa-minus"></i>
             </button>
 
             <span aria-live="polite">{{ quantity }}</span>
@@ -144,7 +169,7 @@
               [disabled]="quantity >= 10"
               (click)="increaseQuantity()"
             >
-              <i class="fa-solid fa-plus" aria-hidden="true"></i>
+              <i class="fa-solid fa-plus"></i>
             </button>
           </div>
         </div>
@@ -160,9 +185,7 @@
 
       </div>
 
-
-      <!-- PRIMARY ACTIONS -->
-
+      <!-- LARGE ADD TO CART + WISHLIST -->
       <div class="product-purchase">
 
         <button
@@ -170,8 +193,9 @@
           class="product-add-cart"
           (click)="addToCart()"
         >
-          <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+          <i class="fa-solid fa-cart-shopping"></i>
           Add to Cart
+          <i class="fa-solid fa-arrow-right product-add-cart__arrow"></i>
         </button>
 
         <button
@@ -186,43 +210,71 @@
             [class.fa-solid]="isWishlisted"
             [class.fa-regular]="!isWishlisted"
             class="fa-heart"
-            aria-hidden="true"
           ></i>
         </button>
 
       </div>
 
-      <button
-        type="button"
-        class="product-buy-now"
-        (click)="buyNow()"
-      >
-        <i class="fa-solid fa-bolt" aria-hidden="true"></i>
-        Buy Now
-      </button>
+      <!-- BUY NOW + GENERATE OUTFIT -->
+      <div class="product-secondary-actions">
 
-      <p class="product-feedback" *ngIf="cartMessage" aria-live="polite">
+        <button
+          type="button"
+          class="product-buy-now"
+          (click)="buyNow()"
+        >
+          <i class="fa-solid fa-bolt"></i>
+          Buy Now
+          <i class="fa-solid fa-arrow-right product-action-arrow"></i>
+        </button>
+
+        <button
+          type="button"
+          class="product-generate-outfit"
+          (click)="generateOutfit()"
+        >
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+          {{ outfitGenerated ? 'Outfit Ready' : 'Generate Outfit' }}
+
+          <i class="fa-solid fa-arrow-right product-action-arrow"></i>
+        </button>
+
+      </div>
+
+      <p
+        class="product-feedback"
+        *ngIf="cartMessage"
+        aria-live="polite"
+      >
         {{ cartMessage }}
       </p>
 
-
-      <!-- BENEFITS -->
-
+      <!-- TRUST BENEFITS -->
       <div class="product-benefits">
 
-        <div>
-          <i class="fa-solid fa-box" aria-hidden="true"></i>
-          <p><strong>COD Available</strong><span>Pay on delivery</span></p>
+        <div class="product-benefit">
+          <i class="fa-solid fa-box"></i>
+          <p>
+            <strong>COD Available</strong>
+            <span>Pay on delivery</span>
+          </p>
         </div>
 
-        <div>
-          <i class="fa-solid fa-rotate" aria-hidden="true"></i>
-          <p><strong>Easy Returns</strong><span>7 days hassle-free</span></p>
+        <div class="product-benefit">
+          <i class="fa-solid fa-arrow-rotate-left"></i>
+          <p>
+            <strong>Easy Returns</strong>
+            <span>7 days hassle-free</span>
+          </p>
         </div>
 
-        <div>
-          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-          <p><strong>Premium Quality</strong><span>Made for everyday</span></p>
+        <div class="product-benefit">
+          <i class="fa-solid fa-shield-halved"></i>
+          <p>
+            <strong>Premium Quality</strong>
+            <span>Made for everyday</span>
+          </p>
         </div>
 
       </div>
@@ -230,190 +282,132 @@
     </div>
   </section>
 
-
-  <!-- DESCRIPTION ONLY -->
-
+  <!-- DESCRIPTION -->
   <section class="product-description-section">
-    <h2>Description</h2>
+
+    <div class="product-section-heading">
+      <div>
+        <span class="product-section-eyebrow">BEHIND THE FIT</span>
+        <h2>Details make the difference.</h2>
+      </div>
+
+      <span class="product-section-index">01 / DETAILS</span>
+    </div>
+
+    <p>{{ product.description }}</p>
 
     <p>
-      The Essential Oversized Tee is crafted for those who love clean,
-      minimal streetwear. Made for everyday comfort, it offers a relaxed
-      fit and an easy-to-style silhouette for college, casual outings
-      and layering.
+      The Essential Oversized Tee is designed for a clean, effortless
+      streetwear look. Its relaxed silhouette makes it easy to pair
+      with cargos, denim or shorts, whether you're heading to college,
+      meeting friends or putting together your everyday fit.
     </p>
+
   </section>
 
-
-  <!-- COMPLETE THE OUTFIT -->
-
+  <!-- SINGLE AI OUTFIT SECTION -->
   <section class="product-outfit" id="complete-outfit">
 
-    <div class="product-outfit__heading">
+    <div class="product-outfit__content">
 
-      <div>
-        <p class="product-outfit__eyebrow">
-          <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
-          AI POWERED
-        </p>
+      <div class="product-outfit__eyebrow">
+        <span class="product-outfit__sparkle">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </span>
 
-        <h2>Complete The Outfit</h2>
-
-        <p>Discover pieces that complement your VYBE.</p>
+        AI POWERED STYLING
       </div>
 
-      <button
-        type="button"
-        class="product-outfit__generate"
-        (click)="generateOutfit()"
-      >
-        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
-        {{ outfitGenerated ? 'Outfit Ready' : 'Generate Outfit' }}
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-      </button>
+      <h2>
+        One piece.<br />
+        <span>A whole new VYBE.</span>
+      </h2>
+
+      <p class="product-outfit__description">
+        Your style deserves more than the ordinary. Discover
+        combinations that complement your chosen piece, explore
+        fresh outfit ideas and create a look that feels
+        unmistakably yours.
+      </p>
+
+      <div class="product-outfit__meta">
+        <span>YOUR STYLE. YOUR RULES.</span>
+        <span>CURATED BY VYBE AI</span>
+      </div>
 
     </div>
 
-    <!-- Simple image boxes: no slider or product-card layout -->
+    <!-- DECORATIVE ARTWORK -->
+    <div class="product-outfit__art" aria-hidden="true">
+      <span class="product-outfit__orbit product-outfit__orbit--one"></span>
+      <span class="product-outfit__orbit product-outfit__orbit--two"></span>
 
-    <div class="product-outfit__grid">
-      @for (item of outfitItems; track item.name) {
-        <div class="product-outfit__tile">
-          <img [src]="item.image" [alt]="item.name" loading="lazy" />
-          <span>{{ item.name }}</span>
-        </div>
-      }
+      <span class="product-outfit__art-word">
+        YOUR<br />
+        VIBE<br />
+        <em>OUR AI.</em>
+      </span>
+
+      <span class="product-outfit__art-spark product-outfit__art-spark--one">
+        ✳
+      </span>
+
+      <span class="product-outfit__art-spark product-outfit__art-spark--two">
+        ✦
+      </span>
+
+      <span class="product-outfit__art-line"></span>
     </div>
-
-    <p class="product-outfit__message" *ngIf="outfitGenerated" aria-live="polite">
-      Demo outfit selected. AI recommendations will be connected later.
-    </p>
 
   </section>
 
-</main>
-
-
-<!-- SIZE GUIDE MODAL -->
-
-<div
-  class="size-guide-backdrop"
-  *ngIf="showSizeGuide"
-  (click)="closeSizeGuide()"
->
-  <section
-    class="size-guide"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="size-guide-title"
-    (click)="$event.stopPropagation()"
+  <!-- SIZE GUIDE MODAL -->
+  <div
+    class="size-guide-backdrop"
+    *ngIf="showSizeGuide"
+    (click)="closeSizeGuide()"
   >
-    <div class="size-guide__heading">
-      <div>
-        <p>FIND YOUR FIT</p>
-        <h2 id="size-guide-title">Size Guide</h2>
-      </div>
+    <section
+      class="size-guide"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="size-guide-title"
+      (click)="$event.stopPropagation()"
+    >
 
-      <button
-        type="button"
-        aria-label="Close size guide"
-        (click)="closeSizeGuide()"
-      >
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-      </button>
-    </div>
+      <div class="size-guide__heading">
+        <div>
+          <span>FIND YOUR FIT</span>
+          <h2 id="size-guide-title">Size Guide</h2>
+        </div>
 
-    <p>
-      This oversized tee is designed for a relaxed fit.
-      Choose your regular size for the intended look.
-    </p>
-
-    <div class="size-guide__sizes">
-      @for (size of sizes; track size) {
         <button
           type="button"
-          [class.is-selected]="selectedSize === size"
-          (click)="selectSize(size); closeSizeGuide()"
+          aria-label="Close size guide"
+          (click)="closeSizeGuide()"
         >
-          {{ size }}
+          <i class="fa-solid fa-xmark"></i>
         </button>
-      }
-    </div>
-  </section>
-</div>
-
-
-<!-- STICKY PURCHASE BAR -->
-
-<div class="product-sticky">
-
-  <div class="product-sticky__inner">
-
-    <div class="product-sticky__product">
-      <img [src]="product.image" [alt]="product.name" />
-
-      <div>
-        <strong>{{ product.name }}</strong>
-
-        <p>
-          ₹{{ product.price }}
-          <del>₹{{ product.originalPrice.toLocaleString('en-IN') }}</del>
-          <span>{{ product.discount }}</span>
-        </p>
-      </div>
-    </div>
-
-
-    <div class="product-sticky__controls">
-
-      <label class="product-sticky__size">
-        <span class="visually-hidden">Selected size</span>
-
-        <select
-          aria-label="Select size"
-          [value]="selectedSize"
-          (change)="selectSize($any($event.target).value)"
-        >
-          @for (size of sizes; track size) {
-            <option [value]="size">{{ size }}</option>
-          }
-        </select>
-      </label>
-
-      <div class="product-sticky__quantity">
-        <button
-          type="button"
-          aria-label="Decrease quantity"
-          [disabled]="quantity <= 1"
-          (click)="decreaseQuantity()"
-        >−</button>
-
-        <span>{{ quantity }}</span>
-
-        <button
-          type="button"
-          aria-label="Increase quantity"
-          [disabled]="quantity >= 10"
-          (click)="increaseQuantity()"
-        >+</button>
       </div>
 
-      <a class="product-sticky__outfit" href="#complete-outfit">
-        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
-        Complete the Outfit
-      </a>
+      <p>
+        This oversized tee is designed for a relaxed fit.
+        Choose your regular size for the intended look.
+      </p>
 
-      <button
-        type="button"
-        class="product-sticky__cart"
-        (click)="addToCart()"
-      >
-        <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-        Add to Cart
-      </button>
+      <div class="size-guide__sizes">
+        @for (size of sizes; track size) {
+          <button
+            type="button"
+            [class.is-selected]="selectedSize === size"
+            (click)="selectSize(size); closeSizeGuide()"
+          >
+            {{ size }}
+          </button>
+        }
+      </div>
 
-    </div>
-
+    </section>
   </div>
 
-</div>
+</main>

@@ -1,140 +1,199 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
-import { AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject,
+  signal,
+} from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+import { ProductComponent } from '../../../../shared/components/product/product';
+import { AiStylistDialogService } from '../../../../shared/components/ai-stylist-dialog/ai-stylist-dialog.service';
+
+import { CatalogService } from '../../../../core/services/catalog.service';
+import { AiService } from '../../../../core/services/ai.service';
+
+import { ProductDto, ProductListResponseDto } from '../../../../core/models/catalog.dto';
+import { SubCategoryResponseDto } from '../../../../core/models/catalog.dto';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, ProductComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home {
+export class Home implements OnInit, AfterViewInit, OnDestroy {
 
+  private readonly catalogService = inject(CatalogService);
+  private readonly aiService = inject(AiService);
+  private readonly aiStylistService = inject(AiStylistDialogService);
 
-readonly categories = [
-  { name: 'T-Shirts', slug: 't-shirts', image: '/images/categories/t-shirts.webp' },
-  { name: 'Shirts', slug: 'shirts', image: '/images/categories/shirts.webp' },
-  { name: 'Cargos', slug: 'cargos', image: '/images/categories/cargos.webp' },
-  { name: 'Hoodies', slug: 'hoodies', image: '/images/categories/hoodies.webp' },
-  { name: 'Jackets', slug: 'jackets', image: '/images/categories/jackets.webp' },
-  { name: 'Co-ords', slug: 'co-ords', image: '/images/categories/co-ords.webp' },
-  { name: 'Sweatshirts', slug: 'sweatshirts', image: '/images/categories/hoodies.webp' },
-  { name: 'Jeans', slug: 'jeans', image: '/images/categories/cargos.webp' },
-  { name: 'Shorts', slug: 'shorts', image: '/images/categories/cargos.webp' },
-  { name: 'Overshirts', slug: 'overshirts', image: '/images/categories/jackets.webp' },
-  { name: 'Polos', slug: 'polos', image: '/images/categories/shirts.webp' },
-  { name: 'Tank Tops', slug: 'tank-tops', image: '/images/categories/t-shirts.webp' },
-];
+  // ==================== SUBCATEGORIES ====================
 
-@ViewChild('categoryTrack')
-categoryTrack?: ElementRef<HTMLDivElement>;
+  subCategories: SubCategoryResponseDto[] = [];
+  isLoadingSubCategories = false;
 
-private categoryTimer?: ReturnType<typeof setInterval>;
+  // ==================== FEATURED PRODUCTS ====================
 
-ngAfterViewInit(): void {
-  this.startCategoryAutoScroll();
-}
+  featuredProducts: ProductDto[] = [];
+  isLoadingFeaturedProducts = false;
 
-ngOnDestroy(): void {
-  this.stopCategoryAutoScroll();
-}
+  // ==================== AI SMART SEARCH ====================
 
-pauseCategoryAutoScroll(): void {
-  this.stopCategoryAutoScroll();
-}
+  aiSearchResults: ProductDto[] = [];
+  aiSearchMessage = '';
+  isAiSearching = signal(false);
 
-resumeCategoryAutoScroll(): void {
-  this.startCategoryAutoScroll();
-}
+  // ==================== CATEGORY AUTO-SCROLL ====================
 
-private stopCategoryAutoScroll(): void {
-  if (this.categoryTimer) {
-    clearInterval(this.categoryTimer);
-    this.categoryTimer = undefined;
-  }
-}
+  @ViewChild('categoryTrack')
+  categoryTrack?: ElementRef<HTMLDivElement>;
 
-private startCategoryAutoScroll(): void {
-  this.stopCategoryAutoScroll();
+  private categoryTimer?: ReturnType<typeof setInterval>;
 
-  if (
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  ) {
-    return;
+  ngOnInit(): void {
+    this.loadSubCategories();
+    this.loadFeaturedProducts();
   }
 
-  this.categoryTimer = setInterval(() => {
-    const track = this.categoryTrack?.nativeElement;
-    const firstCard = track?.querySelector<HTMLElement>('.shop-category-card');
+  ngAfterViewInit(): void {
+    this.startCategoryAutoScroll();
+  }
 
-    if (!track || !firstCard) {
-      return;
-    }
+  ngOnDestroy(): void {
+    this.stopCategoryAutoScroll();
+  }
 
-    const gap = parseFloat(getComputedStyle(track).gap) || 12;
-    const step = firstCard.getBoundingClientRect().width + gap;
-    const maxScroll = track.scrollWidth - track.clientWidth;
+  // ==================== LOAD SUBCATEGORIES ====================
 
-    if (maxScroll <= 1) {
-      return;
-    }
+  private loadSubCategories(): void {
+    this.isLoadingSubCategories = true;
 
-    if (track.scrollLeft + step >= maxScroll - 2) {
-      track.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      track.scrollBy({ left: step, behavior: 'smooth' });
-    }
-  }, 3800);
+    this.catalogService.getSubCategories().subscribe({
+      next: (response) => {
+        this.subCategories = response;
+        this.isLoadingSubCategories = false;
+      },
+      error: (error) => {
+        console.error('Failed to load subcategories:', error);
+        this.isLoadingSubCategories = false;
+      },
+    });
+  }
+
+  // ==================== LOAD FEATURED PRODUCTS ====================
+
+private loadFeaturedProducts(): void {
+  console.time('Featured products total');
+
+  this.catalogService.getProducts({
+    page: 1,
+    limit: 8,
+    isFeatured: true,
+  }).subscribe({
+    next: (response) => {
+      console.timeEnd('Featured products total');
+      console.log('Response received:', performance.now());
+
+      this.featuredProducts = response.products;
+      this.isLoadingFeaturedProducts = false;
+    },
+    error: (error) => {
+      console.error(error);
+      this.isLoadingFeaturedProducts = false;
+    },
+  });
 }
 
-
-
-aiSearchMessage = '';
-selectedAiImageName = '';
-
+  // ==================== AI SMART SEARCH ====================
 submitAiSearch(query: string, event: Event): void {
   event.preventDefault();
 
   const search = query.trim();
 
-  if (!search) {
-    return;
-  }
+  if (!search || this.isAiSearching()) return;
 
-  // Frontend demo only — API integration later.
-  this.aiSearchMessage = `Your style prompt is ready: "${search}"`;
+  this.isAiSearching.set(true);
+
+  this.aiService.smartSearch(search).subscribe({
+    next: (response) => {
+      this.aiSearchResults = response.products;
+      this.aiSearchMessage = response.description || '';
+      this.isAiSearching.set(false);
+    },
+    error: (error) => {
+      console.error('AI search failed:', error);
+      this.isAiSearching.set(false);
+    },
+  });
 }
 
-tryAiExample(input: HTMLInputElement): void {
-  input.value = 'white oversized tee with olive cargos under 1000';
-  input.focus();
+  // ==================== AI STYLIST DIALOG ====================
 
-  this.aiSearchMessage = '';
-}
-
-onAiImageSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-
-  if (!file) {
-    return;
+  openAiDialog(): void {
+    this.aiStylistService.open();
   }
 
-  if (!file.type.startsWith('image/')) {
-    this.aiSearchMessage = 'Please select an image file.';
-    input.value = '';
-    return;
+  // ==================== CATEGORY AUTO-SCROLL CONTROLS ====================
+
+  pauseCategoryAutoScroll(): void {
+    this.stopCategoryAutoScroll();
   }
 
-  if (file.size > 10 * 1024 * 1024) {
-    this.aiSearchMessage = 'Image size must be under 10 MB.';
-    input.value = '';
-    return;
+  resumeCategoryAutoScroll(): void {
+    this.startCategoryAutoScroll();
   }
 
-  this.selectedAiImageName = file.name;
-  this.aiSearchMessage = `Image selected: ${file.name}`;
-}
-  
+  private stopCategoryAutoScroll(): void {
+    if (this.categoryTimer !== undefined) {
+      clearInterval(this.categoryTimer);
+      this.categoryTimer = undefined;
+    }
+  }
+
+  private startCategoryAutoScroll(): void {
+    this.stopCategoryAutoScroll();
+
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
+
+    this.categoryTimer = setInterval(() => {
+      const track = this.categoryTrack?.nativeElement;
+
+      const firstCard =
+        track?.querySelector<HTMLElement>('.shop-category-card');
+
+      if (!track || !firstCard) {
+        return;
+      }
+
+      const gap = parseFloat(getComputedStyle(track).gap) || 12;
+      const step = firstCard.getBoundingClientRect().width + gap;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+
+      if (maxScroll <= 1) {
+        return;
+      }
+
+      if (track.scrollLeft + step >= maxScroll - 2) {
+        track.scrollTo({
+          left: 0,
+          behavior: 'smooth',
+        });
+      } else {
+        track.scrollBy({
+          left: step,
+          behavior: 'smooth',
+        });
+      }
+    }, 3000);
+  }
 }

@@ -527,3 +527,29 @@ option:checked {
   background: rgba(10, 12, 10, 0.72);
   backdrop-filter: blur(4px);
 }
+
+
+/* VYBE Outfit Match Dialog */
+
+.ai-stylist-dialog-panel .mat-mdc-dialog-container {
+  padding: 0;
+}
+
+.ai-stylist-dialog-panel .mat-mdc-dialog-surface {
+  padding: 0;
+  overflow: visible;
+  border-radius: 22px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.cdk-overlay-dark-backdrop.ai-stylist-backdrop {
+  background: rgba(10, 12, 10, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 600px) {
+  .ai-stylist-dialog-panel .mat-mdc-dialog-surface {
+    border-radius: 18px;
+  }
+}

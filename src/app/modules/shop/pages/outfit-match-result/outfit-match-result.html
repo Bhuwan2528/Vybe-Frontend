@@ -1,0 +1,283 @@
+
+<div class="outfit-result">
+
+  <!-- HERO BANNER -->
+  <section class="outfit-hero">
+    <img
+      class="outfit-hero__image"
+      src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1800&q=90"
+      alt=""
+      fetchpriority="high"
+    />
+
+    <div class="outfit-hero__overlay"></div>
+
+    <div class="outfit-hero__content">
+      <a routerLink="/shop" class="outfit-hero__back">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Back to shop
+      </a>
+
+      <p class="outfit-hero__eyebrow">
+        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+        YOUR PERSONAL AI STYLIST
+      </p>
+
+      <h1>
+        Your next<br />
+        signature <span>look.</span>
+      </h1>
+
+      <p class="outfit-hero__description">
+        Thoughtfully matched pieces. Effortless styling.
+        One collection made to feel like you.
+      </p>
+
+      <div class="outfit-hero__chips">
+        <span>STREETWEAR</span>
+        <span>EVERYDAY EDIT</span>
+        <span>BUDGET FRIENDLY</span>
+      </div>
+    </div>
+
+    <div class="outfit-hero__stamp" aria-hidden="true">
+      <i class="fa-solid fa-sparkles"></i>
+      <span>CURATED<br />FOR YOUR<br /><strong>VYBE.</strong></span>
+    </div>
+
+    <span class="outfit-hero__index" aria-hidden="true">
+      VYBE AI / COLLECTION 001
+    </span>
+  </section>
+
+  <!-- COLLECTION CONTENT -->
+  <main class="outfit-result__container">
+
+    <header class="outfit-collection-heading">
+      <div class="outfit-collection-heading__content">
+        <p class="outfit-collection-heading__eyebrow">
+          <span></span>
+          YOUR PERSONALIZED EDIT
+        </p>
+
+        <h2>
+          {{ collectionTitle }}<span>.</span>
+        </h2>
+
+        <p>{{ collectionDescription }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="outfit-save-button"
+        [class.is-saved]="isSaved"
+        [attr.aria-pressed]="isSaved"
+        (click)="toggleSaveCollection()"
+      >
+        <i
+          class="fa-solid"
+          [class.fa-bookmark]="isSaved"
+          [class.fa-heart]="!isSaved"
+          aria-hidden="true"
+        ></i>
+
+        {{ isSaved ? 'Collection Saved' : 'Save Collection' }}
+      </button>
+    </header>
+
+    <div class="outfit-result__layout">
+
+      <!-- LEFT: PRODUCTS -->
+      <section class="outfit-products" aria-label="Suggested outfit products">
+
+        <div class="outfit-products__toolbar">
+          <div>
+            <span class="outfit-products__count">
+              {{ products.length }} PIECES
+            </span>
+            <span class="outfit-products__separator">/</span>
+            <span class="outfit-products__caption">
+              Your complete edit
+            </span>
+          </div>
+
+          <span class="outfit-products__sort-label">
+            AI SELECTED
+            <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <div class="outfit-products__grid">
+          @for (product of products; track product.id) {
+            <app-product
+              [product]="product"
+              (addToCart)="handleAddToCart($event)"
+            />
+          }
+        </div>
+
+        <div class="outfit-products__note">
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          <p>
+            Mix and match these pieces to create your own version of this look.
+            Product availability and final prices should be checked before purchase.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: SUMMARY -->
+      <aside class="outfit-summary">
+
+        <!-- BUDGET CARD -->
+        <section class="outfit-budget">
+          <div class="outfit-budget__header">
+            <div>
+              <p class="outfit-budget__eyebrow">THE COMPLETE LOOK</p>
+              <h3>Your outfit<br />at a glance.</h3>
+            </div>
+
+            <span class="outfit-budget__icon">
+              <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <div class="outfit-budget__price">
+            <span>Total outfit value</span>
+            <strong>
+              {{ totalPrice | currency:'INR':'symbol':'1.0-0':'en-IN' }}
+            </strong>
+          </div>
+
+          @if (totalSavings > 0) {
+            <div class="outfit-budget__savings">
+              <span>
+                Original total
+                <del>
+                  {{
+                    originalTotal
+                      | currency:'INR':'symbol':'1.0-0':'en-IN'
+                  }}
+                </del>
+              </span>
+
+              <span class="outfit-budget__savings-badge">
+                Save
+                {{ totalSavings | currency:'INR':'symbol':'1.0-0':'en-IN' }}
+              </span>
+            </div>
+          }
+
+          <div class="outfit-budget__divider"></div>
+
+          <div class="outfit-budget__limit">
+            <span>Your budget</span>
+            <strong>
+              {{ budgetLimit | currency:'INR':'symbol':'1.0-0':'en-IN' }}
+            </strong>
+          </div>
+
+          <div
+            class="outfit-budget__progress"
+            role="progressbar"
+            [attr.aria-valuenow]="budgetProgress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Percentage of budget used"
+          >
+            <span [style.width.%]="budgetProgress"></span>
+          </div>
+
+          <div class="outfit-budget__remaining">
+            <span>
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              {{ totalPrice <= budgetLimit ? 'Within your budget' : 'Over your budget' }}
+            </span>
+
+            <strong>
+              {{
+                totalPrice <= budgetLimit
+                  ? (budgetRemaining | currency:'INR':'symbol':'1.0-0':'en-IN') + ' left'
+                  : ((totalPrice - budgetLimit) | currency:'INR':'symbol':'1.0-0':'en-IN') + ' over'
+              }}
+            </strong>
+          </div>
+
+          <button
+            type="button"
+            class="outfit-budget__save"
+            [class.is-saved]="isSaved"
+            [attr.aria-pressed]="isSaved"
+            (click)="toggleSaveCollection()"
+          >
+            <i
+              class="fa-solid"
+              [class.fa-bookmark]="isSaved"
+              [class.fa-arrow-right]="!isSaved"
+              aria-hidden="true"
+            ></i>
+            {{ isSaved ? 'Saved to Your Edits' : 'Save This Collection' }}
+          </button>
+
+          <p class="outfit-budget__footnote">
+            Save this edit to revisit your favourite combination.
+          </p>
+        </section>
+
+        <!-- AI EXPLANATION -->
+        <section class="outfit-why">
+          <div class="outfit-why__heading">
+            <span class="outfit-why__icon">
+              <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+            </span>
+
+            <div>
+              <p>THE THINKING BEHIND IT</p>
+              <h3>Why this look works</h3>
+            </div>
+          </div>
+
+          <div class="outfit-why__reasons">
+            @for (reason of reasons; track reason.title) {
+              <article class="outfit-reason">
+                <span class="outfit-reason__icon">
+                  <i [class]="reason.icon" aria-hidden="true"></i>
+                </span>
+
+                <div>
+                  <h4>{{ reason.title }}</h4>
+                  <p>{{ reason.description }}</p>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+
+        <!-- STYLE NOTE -->
+        <section class="outfit-style-note">
+          <span class="outfit-style-note__label">A LITTLE STYLE NOTE</span>
+          <p>
+            Keep your accessories minimal and let the fit do the talking.
+            A clean sneaker and one subtle accessory bring the whole look together.
+          </p>
+          <span class="outfit-style-note__signature">Stay in your VYBE.</span>
+        </section>
+
+      </aside>
+    </div>
+
+    <!-- BOTTOM BANNER -->
+    <footer class="outfit-result-footer">
+      <div>
+        <span class="outfit-result-footer__eyebrow">YOUR STYLE, YOUR RULES</span>
+        <h2>Wear what feels like <span>you.</span></h2>
+      </div>
+
+      <a routerLink="/shop" class="outfit-result-footer__link">
+        Explore more styles
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </footer>
+
+  </main>
+</div>
