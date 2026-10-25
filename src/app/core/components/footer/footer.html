@@ -1,0 +1,199 @@
+
+<footer class="vybe-footer">
+  <div class="vybe-footer__container">
+
+    <div class="vybe-footer__grid">
+
+      <!-- BRAND -->
+      <div class="vybe-footer__brand">
+        <a routerLink="/" class="vybe-footer__logo">
+          VYBE
+        </a>
+
+        <p>Not just clothes. A lifestyle.</p>
+      </div>
+
+
+      <!-- SHOP -->
+      <section
+        class="vybe-footer__group"
+        [class.is-open]="activeSection === 'shop'"
+      >
+        <button
+          type="button"
+          class="vybe-footer__toggle"
+          aria-controls="footer-shop"
+          [attr.aria-expanded]="activeSection === 'shop'"
+          (click)="toggleSection('shop')"
+        >
+          <span>Shop</span>
+          <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+
+        <div class="vybe-footer__links" id="footer-shop">
+          <a routerLink="/shop" [queryParams]="{ category: 'T-Shirts' }">T-Shirts</a>
+          <a routerLink="/shop" [queryParams]="{ category: 'Shirts' }">Shirts</a>
+          <a routerLink="/shop" [queryParams]="{ category: 'Cargos' }">Cargos</a>
+          <a routerLink="/shop" [queryParams]="{ category: 'Hoodies' }">Hoodies</a>
+          <a routerLink="/shop" [queryParams]="{ category: 'Jackets' }">Jackets</a>
+          <a routerLink="/shop" [queryParams]="{ category: 'Co-ords' }">Co-ords</a>
+        </div>
+      </section>
+
+
+      <!-- COMPANY -->
+      <section
+        class="vybe-footer__group"
+        [class.is-open]="activeSection === 'company'"
+      >
+        <button
+          type="button"
+          class="vybe-footer__toggle"
+          aria-controls="footer-company"
+          [attr.aria-expanded]="activeSection === 'company'"
+          (click)="toggleSection('company')"
+        >
+          <span>Company</span>
+          <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+
+        <div class="vybe-footer__links" id="footer-company">
+          <a routerLink="/about">About Us</a>
+          <a routerLink="/contact">Contact</a>
+          <a routerLink="/privacy-policy">Privacy Policy</a>
+          <a routerLink="/terms">Terms &amp; Conditions</a>
+        </div>
+      </section>
+
+
+      <!-- HELP -->
+      <section
+        class="vybe-footer__group"
+        [class.is-open]="activeSection === 'help'"
+      >
+        <button
+          type="button"
+          class="vybe-footer__toggle"
+          aria-controls="footer-help"
+          [attr.aria-expanded]="activeSection === 'help'"
+          (click)="toggleSection('help')"
+        >
+          <span>Help</span>
+          <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+
+        <div class="vybe-footer__links" id="footer-help">
+          <a routerLink="/faq">FAQ</a>
+          <a routerLink="/shipping">Shipping</a>
+          <a routerLink="/returns">Returns</a>
+          <a routerLink="/size-guide">Size Guide</a>
+        </div>
+      </section>
+
+
+      <!-- NEWSLETTER -->
+      <section
+        class="vybe-footer__group vybe-footer__connected"
+        [class.is-open]="activeSection === 'connected'"
+      >
+        <button
+          type="button"
+          class="vybe-footer__toggle"
+          aria-controls="footer-connected"
+          [attr.aria-expanded]="activeSection === 'connected'"
+          (click)="toggleSection('connected')"
+        >
+          <span>Stay Connected</span>
+          <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+
+        <div class="vybe-footer__connected-content" id="footer-connected">
+          <p>
+            Subscribe to get updates on new drops
+            and exclusive offers.
+          </p>
+
+          <form
+            class="vybe-footer__newsletter"
+            (ngSubmit)="subscribe()"
+          >
+            <input
+              type="email"
+              name="newsletterEmail"
+              [(ngModel)]="email"
+              placeholder="Enter your email"
+              aria-label="Your email address"
+              autocomplete="email"
+              required
+            />
+
+            <button type="submit" aria-label="Subscribe">
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </form>
+
+          <p
+            class="vybe-footer__message"
+            *ngIf="newsletterMessage"
+            aria-live="polite"
+          >
+            {{ newsletterMessage }}
+          </p>
+
+          <!-- Desktop social links -->
+          <div class="vybe-footer__social vybe-footer__social--desktop">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            </a>
+
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+            </a>
+
+            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X">
+              <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+            </a>
+
+            <a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+              <i class="fa-brands fa-pinterest-p" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+
+    <!-- Mobile social links -->
+    <div class="vybe-footer__social vybe-footer__social--mobile">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+      </a>
+
+      <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+      </a>
+
+      <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X">
+        <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+      </a>
+
+      <a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+        <i class="fa-brands fa-pinterest-p" aria-hidden="true"></i>
+      </a>
+    </div>
+
+
+    <!-- COPYRIGHT -->
+    <div class="vybe-footer__bottom">
+      <p>© 2026 VYBE. All rights reserved.</p>
+
+      <p>
+        Made with
+        <i class="fa-solid fa-heart vybe-footer__heart" aria-hidden="true"></i>
+        for the next generation.
+      </p>
+    </div>
+
+  </div>
+</footer>

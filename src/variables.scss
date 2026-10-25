@@ -1,0 +1,68 @@
+/* =====================================
+   COLORS
+===================================== */
+
+$color-graphite: #171A17;
+$color-bone: #F5F2EA;
+$color-volt: #D6FF58;
+$color-olive: #87936B;
+$color-stone: #D8D5CE;
+
+$color-white: #FFFFFF;
+$color-black: #000000;
+
+
+/* =====================================
+   BACKGROUND COLORS
+===================================== */
+
+$bg-primary: $color-bone;
+$bg-dark: $color-graphite;
+$bg-surface: $color-white;
+$bg-muted: #EEECE5;
+
+
+/* =====================================
+   TEXT COLORS
+===================================== */
+
+$text-primary: $color-graphite;
+$text-secondary: #62645E;
+$text-muted: #85867F;
+$text-inverse: $color-bone;
+$text-accent: $color-olive;
+
+
+/* =====================================
+   BORDER COLORS
+===================================== */
+
+$border-light: #E5E1D8;
+$border-medium: $color-stone;
+$border-dark: #343731;
+
+
+/* =====================================
+   TYPOGRAPHY
+===================================== */
+
+$font-heading: "Space Grotesk", sans-serif;
+$font-body: "Inter", sans-serif;
+
+$font-regular: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+
+
+/* =====================================
+   TEXT SIZES
+===================================== */
+
+$text-xs: 12px;
+$text-sm: 14px;
+$text-base: 16px;
+$text-lg: 18px;
+$text-xl: 20px;
+$text-2xl: 24px;
+$text-3xl: 32px;

@@ -1,0 +1,510 @@
+
+@use '../../../../variables' as v;
+
+:host {
+  display: block;
+}
+
+/* =====================================
+   HEADER BASE
+===================================== */
+
+.vybe-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  width: 100%;
+  color: v.$color-bone;
+  border-bottom: 1px solid rgba(245, 242, 234, 0.08);
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+/* Dark translucent look at the top */
+
+.vybe-header--transparent {
+  background: rgba(17, 19, 17, 0.9);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+/* Fully dark after scroll */
+
+.vybe-header--solid {
+  background: #171A17;
+  border-bottom-color: rgba(245, 242, 234, 0.09);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.24);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* =====================================
+   HEADER LAYOUT
+===================================== */
+
+.vybe-header__inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2vw, 30px);
+  width: calc(100% - 80px);
+  max-width: 1600px;
+  height: 82px;
+  margin-inline: auto;
+}
+
+/* =====================================
+   LOGO
+===================================== */
+
+.vybe-header__brand {
+  display: inline-flex;
+  flex: 0 0 130px;
+  align-items: center;
+  color: v.$color-bone;
+}
+
+.vybe-header__logo {
+  display: block;
+  width: auto;
+  max-width: 124px;
+  height: 39px;
+  object-fit: contain;
+}
+
+.vybe-header__wordmark {
+  color: v.$color-bone;
+  font-family: v.$font-heading;
+  font-size: 32px;
+  font-weight: v.$font-bold;
+  letter-spacing: -1.6px;
+  line-height: 1;
+}
+
+.vybe-header__wordmark span {
+  color: v.$color-volt;
+}
+
+/* =====================================
+   DESKTOP NAVIGATION
+===================================== */
+
+.vybe-header__nav {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 2vw, 30px);
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.vybe-header__nav a {
+  position: relative;
+  padding: 12px 0;
+  color: rgba(245, 242, 234, 0.91);
+  font-family: v.$font-body;
+  font-size: 15px;
+  font-weight: v.$font-medium;
+  transition: color 160ms ease;
+}
+
+.vybe-header__nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: v.$color-volt;
+  content: '';
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 160ms ease;
+}
+
+.vybe-header__nav a:hover,
+.vybe-header__nav a.is-active {
+  color: v.$color-volt;
+}
+
+.vybe-header__nav a:hover::after,
+.vybe-header__nav a.is-active::after {
+  transform: scaleX(1);
+}
+
+/* =====================================
+   SEARCH
+===================================== */
+
+.vybe-search {
+  display: flex;
+  flex: 0 1 335px;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px 0 15px;
+  border: 1px solid rgba(245, 242, 234, 0.14);
+  border-radius: 999px;
+  background: rgba(245, 242, 234, 0.09);
+  color: v.$color-bone;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.vybe-search:focus-within {
+  border-color: rgba(214, 255, 88, 0.65);
+  background: rgba(245, 242, 234, 0.12);
+}
+
+.vybe-search__icon {
+  flex: 0 0 auto;
+  color: rgba(245, 242, 234, 0.85);
+  font-size: 14px;
+}
+
+.vybe-search input {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: v.$color-bone;
+  font-family: v.$font-body;
+  font-size: 12px;
+}
+
+.vybe-search input::placeholder {
+  color: rgba(245, 242, 234, 0.56);
+  opacity: 1;
+}
+
+.vybe-search input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.vybe-search__submit {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 29px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: v.$color-volt;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.vybe-search__submit:hover:not(:disabled) {
+  background: v.$color-volt;
+  color: v.$color-graphite;
+}
+
+.vybe-search__submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =====================================
+   HEADER ACTIONS
+===================================== */
+
+.vybe-header__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 9px;
+}
+
+.vybe-icon-button {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: v.$color-bone;
+  font-size: 17px;
+  line-height: 1;
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.vybe-icon-button:hover {
+  border-color: rgba(214, 255, 88, 0.22);
+  background: rgba(214, 255, 88, 0.09);
+  color: v.$color-volt;
+}
+
+.vybe-icon-button:focus-visible {
+  outline: 2px solid v.$color-volt;
+  outline-offset: 2px;
+}
+
+.vybe-header__profile {
+  border-color: rgba(245, 242, 234, 0.44);
+  background: rgba(245, 242, 234, 0.05);
+}
+
+.vybe-header__count {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: v.$color-volt;
+  color: v.$color-graphite;
+  font-size: 10px;
+  font-weight: v.$font-bold;
+  line-height: 1;
+}
+
+/* Mobile elements hidden on desktop */
+
+.vybe-header__mobile-menu,
+.vybe-header__mobile-only,
+.vybe-header__mobile-search-panel {
+  display: none;
+}
+
+/* =====================================
+   HEADER SPACER
+===================================== */
+
+.vybe-header-spacer {
+  height: 82px;
+}
+
+.vybe-header-spacer--home {
+  height: 0;
+}
+
+/* =====================================
+   MOBILE OFFCANVAS
+===================================== */
+
+.vybe-mobile-nav {
+  width: min(86vw, 370px) !important;
+  border: 0;
+  background: v.$color-graphite;
+  color: v.$color-bone;
+}
+
+.vybe-mobile-nav__header {
+  min-height: 68px;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(245, 242, 234, 0.12);
+}
+
+.vybe-mobile-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  color: v.$color-bone;
+}
+
+.vybe-mobile-nav__brand img {
+  display: block;
+  width: auto;
+  max-width: 112px;
+  height: 33px;
+  object-fit: contain;
+}
+
+.vybe-mobile-nav__body {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 20px 24px;
+}
+
+.vybe-mobile-nav__links {
+  display: flex;
+  flex-direction: column;
+}
+
+.vybe-mobile-nav__links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 55px;
+  border-bottom: 1px solid rgba(245, 242, 234, 0.12);
+  color: v.$color-bone;
+  font-family: v.$font-heading;
+  font-size: 18px;
+  font-weight: v.$font-medium;
+  transition: color 160ms ease;
+}
+
+.vybe-mobile-nav__links a i {
+  color: v.$color-olive;
+  font-size: 13px;
+}
+
+.vybe-mobile-nav__links a:hover {
+  color: v.$color-volt;
+}
+
+.vybe-mobile-nav__note {
+  margin-top: auto;
+  padding-top: 36px;
+}
+
+.vybe-mobile-nav__note span {
+  color: v.$color-volt;
+  font-size: 10px;
+  font-weight: v.$font-bold;
+  letter-spacing: 2px;
+}
+
+.vybe-mobile-nav__note p {
+  margin-top: 8px;
+  margin-bottom: 0;
+  color: rgba(245, 242, 234, 0.7);
+  font-size: 13px;
+}
+
+/* =====================================
+   TABLET & MOBILE
+===================================== */
+
+@media (max-width: 1120px) {
+  .vybe-header__inner {
+    width: calc(100% - 32px);
+    height: 64px;
+    gap: 10px;
+  }
+
+  .vybe-header__nav,
+  .vybe-header__desktop-search,
+  .vybe-header__desktop-only {
+    display: none;
+  }
+
+  .vybe-header__mobile-menu,
+  .vybe-header__mobile-only {
+    display: inline-flex;
+  }
+
+  .vybe-header__mobile-menu {
+    order: 0;
+  }
+
+  .vybe-header__brand {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin-right: auto;
+    order: 1;
+  }
+
+  .vybe-header__logo {
+    max-width: 105px;
+    height: 32px;
+  }
+
+  .vybe-header__actions {
+    gap: 3px;
+    order: 2;
+  }
+
+  .vybe-header__cart {
+    order: 3;
+  }
+
+  .vybe-icon-button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .vybe-header-spacer {
+    height: 64px;
+  }
+
+  .vybe-header-spacer--home {
+    height: 0;
+  }
+
+  .vybe-header__mobile-search-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 16px;
+    left: 16px;
+    display: block;
+    padding: 10px;
+    border: 1px solid rgba(245, 242, 234, 0.12);
+    border-radius: 15px;
+    background: v.$color-graphite;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+  }
+
+  .vybe-header__mobile-search-panel .vybe-search {
+    width: 100%;
+    max-width: none;
+    height: 44px;
+    background: rgba(245, 242, 234, 0.08);
+  }
+
+  .vybe-header__mobile-search-panel .vybe-search input {
+    font-size: 13px;
+  }
+}
+
+/* Smaller mobile devices */
+
+@media (max-width: 390px) {
+  .vybe-header__inner {
+    width: calc(100% - 18px);
+    gap: 5px;
+  }
+
+  .vybe-header__logo {
+    max-width: 90px;
+    height: 28px;
+  }
+
+  .vybe-icon-button {
+    width: 31px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .vybe-header__count {
+    min-width: 15px;
+    height: 15px;
+    font-size: 9px;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .vybe-header,
+  .vybe-header * {
+    transition: none !important;
+  }
+}

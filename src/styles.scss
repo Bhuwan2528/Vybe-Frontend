@@ -1,1 +1,529 @@
-/* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+@use './variables' as v;
+
+
+/* =====================================
+   1. ANGULAR MATERIAL THEME
+===================================== */
+
+html {
+  height: 100%;
+  color-scheme: light;
+
+  @include mat.theme((
+    color: (
+      primary: mat.$chartreuse-palette,
+      tertiary: mat.$green-palette,
+      theme-type: light,
+    ),
+    typography: (
+      plain-family: v.$font-body,
+      brand-family: v.$font-heading,
+      bold-weight: v.$font-bold,
+      medium-weight: v.$font-medium,
+      regular-weight: v.$font-regular,
+    ),
+    density: 0,
+  ));
+}
+
+
+/* =====================================
+   2. BASE STYLES
+===================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: v.$bg-primary;
+  color: v.$text-primary;
+  font-family: v.$font-body;
+  font-size: v.$text-base;
+  line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: v.$color-volt;
+  color: v.$color-graphite;
+}
+
+
+/* =====================================
+   3. GLOBAL TYPOGRAPHY
+===================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  color: v.$text-primary;
+  font-family: v.$font-heading;
+  font-weight: v.$font-bold;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(32px, 5vw, 64px);
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: clamp(26px, 3.5vw, 48px);
+}
+
+h3 {
+  font-size: clamp(22px, 2.5vw, 32px);
+}
+
+h4 {
+  font-size: v.$text-xl;
+}
+
+h5 {
+  font-size: v.$text-lg;
+}
+
+h6 {
+  font-size: v.$text-base;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: v.$text-secondary;
+  font-size: v.$text-base;
+}
+
+small,
+.vybe-text-sm {
+  font-size: v.$text-sm;
+}
+
+.vybe-text-xs {
+  font-size: v.$text-xs;
+}
+
+.vybe-text-muted {
+  color: v.$text-muted;
+}
+
+.vybe-text-secondary {
+  color: v.$text-secondary;
+}
+
+.vybe-text-accent {
+  color: v.$text-accent;
+}
+
+
+/* =====================================
+   4. PAGE LAYOUT
+===================================== */
+
+.page-container {
+  width: calc(100% - 32px);
+  max-width: 1140px;
+  margin-inline: auto;
+}
+
+.vybe-section {
+  padding-block: 48px;
+}
+
+.vybe-section-title {
+  margin-bottom: 12px;
+}
+
+.vybe-section-description {
+  max-width: 640px;
+  margin-bottom: 32px;
+  color: v.$text-secondary;
+}
+
+
+/* =====================================
+   5. BUTTONS
+===================================== */
+
+.vybe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px 24px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: v.$font-body;
+  font-size: v.$text-sm;
+  font-weight: v.$font-semibold;
+  line-height: 1.4;
+  text-align: center;
+  transition:
+    background 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.vybe-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.vybe-btn:focus-visible {
+  outline: 2px solid v.$color-olive;
+  outline-offset: 3px;
+}
+
+
+/* Primary */
+
+.vybe-btn-primary {
+  background: v.$color-volt;
+  color: v.$color-graphite;
+}
+
+.vybe-btn-primary:hover:not(:disabled) {
+  background: v.$color-olive;
+  color: v.$color-white;
+}
+
+.vybe-btn-primary:active:not(:disabled) {
+  background: v.$color-graphite;
+  color: v.$color-volt;
+}
+
+
+/* Secondary */
+
+.vybe-btn-secondary {
+  background: v.$bg-muted;
+  color: v.$text-primary;
+}
+
+.vybe-btn-secondary:hover:not(:disabled) {
+  background: v.$color-stone;
+}
+
+.vybe-btn-secondary:active:not(:disabled) {
+  background: v.$color-olive;
+  color: v.$color-white;
+}
+
+
+/* Outline */
+
+.vybe-btn-outline {
+  border-color: v.$border-medium;
+  background: transparent;
+  color: v.$text-primary;
+}
+
+.vybe-btn-outline:hover:not(:disabled) {
+  border-color: v.$color-graphite;
+  background: v.$bg-muted;
+}
+
+.vybe-btn-outline:active:not(:disabled) {
+  background: v.$color-stone;
+}
+
+
+/* Disabled */
+
+.vybe-btn:disabled,
+.vybe-btn.is-disabled {
+  border-color: transparent;
+  background: v.$color-stone;
+  color: v.$text-muted;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* =====================================
+   6. CHECKBOXES & RADIO BUTTONS
+===================================== */
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: v.$color-volt;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:disabled,
+input[type="radio"]:disabled {
+  cursor: not-allowed;
+}
+
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  outline: 2px solid v.$color-olive;
+  outline-offset: 3px;
+}
+
+.vybe-check-label,
+.vybe-radio-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: v.$text-primary;
+  font-size: v.$text-sm;
+  cursor: pointer;
+}
+
+
+/* =====================================
+   7. BADGES
+===================================== */
+
+.vybe-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: v.$bg-muted;
+  color: v.$text-primary;
+  font-size: v.$text-xs;
+  font-weight: v.$font-semibold;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+
+/* Sale / New */
+
+.vybe-badge-sale,
+.vybe-badge-new {
+  background: v.$color-volt;
+  color: v.$color-graphite;
+}
+
+
+/* Featured / Best Seller */
+
+.vybe-badge-featured {
+  background: v.$color-graphite;
+  color: v.$color-bone;
+}
+
+
+/* Success */
+
+.vybe-badge-success {
+  background: v.$color-olive;
+  color: v.$color-white;
+}
+
+
+/* Muted */
+
+.vybe-badge-muted {
+  background: v.$color-stone;
+  color: v.$text-muted;
+}
+
+
+/* =====================================
+   8. TAGS / FILTER CHIPS
+===================================== */
+
+.vybe-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 12px;
+  border: 1px solid v.$border-medium;
+  border-radius: 999px;
+  background: transparent;
+  color: v.$text-primary;
+  font-size: v.$text-sm;
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.vybe-tag:hover {
+  border-color: v.$color-olive;
+}
+
+.vybe-tag:active {
+  transform: scale(0.98);
+}
+
+.vybe-tag.is-active {
+  border-color: v.$color-graphite;
+  background: v.$color-graphite;
+  color: v.$color-bone;
+}
+
+.vybe-tag:focus-visible {
+  outline: 2px solid v.$color-olive;
+  outline-offset: 2px;
+}
+
+
+/* =====================================
+   9. SELECT / DROPDOWN
+===================================== */
+
+select {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid v.$border-medium;
+  border-radius: 8px;
+  background: v.$bg-surface;
+  color: v.$text-primary;
+  cursor: pointer;
+}
+
+select:focus-visible {
+  border-color: v.$color-olive;
+  outline: 2px solid v.$color-olive;
+  outline-offset: 2px;
+}
+
+option:checked {
+  background: v.$color-volt;
+  color: v.$color-graphite;
+}
+
+
+/* =====================================
+   10. GLOBAL SCROLLBAR
+===================================== */
+
+/* Chrome / Edge / Safari */
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: v.$color-bone;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid v.$color-bone;
+  border-radius: 999px;
+  background: v.$color-olive;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: v.$color-graphite;
+}
+
+
+/* Firefox */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: v.$color-olive v.$color-bone;
+}
+
+
+/* =====================================
+   11. REDUCED MOTION
+===================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+
+/* =====================================
+   12. MOBILE
+===================================== */
+
+@media (max-width: 768px) {
+  .page-container {
+    width: calc(100% - 32px);
+  }
+
+  .vybe-section {
+    padding-block: 32px;
+  }
+
+  .vybe-btn {
+    padding: 12px 20px;
+  }
+}
+
+
+
+/* AI STYLIST DIALOG */
+
+.ai-stylist-dialog-panel .mat-mdc-dialog-container {
+  padding: 0;
+}
+
+.ai-stylist-dialog-panel .mat-mdc-dialog-surface {
+  padding: 0;
+  overflow: visible;
+  border-radius: 22px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.cdk-overlay-dark-backdrop.ai-stylist-backdrop {
+  background: rgba(10, 12, 10, 0.72);
+  backdrop-filter: blur(4px);
+}

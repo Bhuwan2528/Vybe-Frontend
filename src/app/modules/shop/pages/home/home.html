@@ -1,0 +1,310 @@
+
+<!-- HERO SECTION -->
+
+<section class="home-hero" aria-labelledby="hero-title">
+
+  <picture class="home-hero__background">
+    <source
+      media="(max-width: 767px)"
+      srcset="/images/hero-mobile-bg.png"
+      type="image/webp"
+    />
+
+    <img
+      src="/images/hero-desktop-bg.png"
+      alt=""
+      fetchpriority="high"
+      draggable="false"
+    />
+  </picture>
+
+  <div class="home-hero__overlay"></div>
+
+  <div class="home-hero__container">
+
+    <div class="home-hero__content">
+
+      <p class="home-hero__eyebrow">
+        NOT JUST CLOTHES
+      </p>
+
+      <h1 id="hero-title" class="home-hero__title">
+        <span>BUILT</span>
+        <span>FOR YOUR</span>
+        <span class="home-hero__accent">VYBE</span>
+      </h1>
+
+      <p class="home-hero__description">
+        Streetwear for the next generation.
+        <br />
+        Discover your style and shop with AI.
+      </p>
+
+      <div class="home-hero__actions">
+
+        <a
+          routerLink="/shop"
+          class="home-hero__button home-hero__button--primary"
+        >
+          Shop Collection
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+
+        <a
+          routerLink="/ai-search"
+          class="home-hero__button home-hero__button--secondary"
+        >
+          Try AI Search
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+
+      </div>
+    </div>
+
+    <ul class="home-hero__stats" aria-label="VYBE highlights">
+
+      <li>
+        <strong>500+</strong>
+        <span>Premium Styles</span>
+      </li>
+
+      <li>
+        <strong>4.8 <span class="home-hero__star">★</span></strong>
+        <span>Customer Rating</span>
+      </li>
+
+      <li>
+        <strong>7 Days</strong>
+        <span>Easy Returns</span>
+      </li>
+
+      <li>
+        <strong>COD</strong>
+        <span>Available</span>
+      </li>
+
+    </ul>
+
+  </div>
+</section>
+
+
+<!-- FEATURES STRIP: DESKTOP AND TABLET ONLY -->
+
+<section class="home-features" aria-label="Shopping benefits">
+
+  <div class="home-features__inner">
+
+    <div class="home-features__item">
+      <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+      <div>
+        <h2>AI Powered Shopping</h2>
+        <p>Find outfits with natural language</p>
+      </div>
+    </div>
+
+    <div class="home-features__item">
+      <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+      <div>
+        <h2>Premium Quality</h2>
+        <p>Carefully curated streetwear</p>
+      </div>
+    </div>
+
+    <div class="home-features__item">
+      <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+      <div>
+        <h2>Easy Returns</h2>
+        <p>7 days hassle-free returns</p>
+      </div>
+    </div>
+
+    <div class="home-features__item">
+      <i class="fa-solid fa-box" aria-hidden="true"></i>
+      <div>
+        <h2>COD Available</h2>
+        <p>Pay on delivery</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<section class="shop-categories" aria-labelledby="category-title">
+
+  <div class="shop-categories__heading">
+    <h2 id="category-title">Shop by Category</h2>
+
+    <a routerLink="/shop" class="shop-categories__view-all">
+      View All
+      <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div
+    #categoryTrack
+    class="shop-categories__track"
+    role="region"
+    aria-label="Shop product categories"
+    tabindex="0"
+    (mouseenter)="pauseCategoryAutoScroll()"
+    (mouseleave)="resumeCategoryAutoScroll()"
+    (touchstart)="pauseCategoryAutoScroll()"
+    (touchend)="resumeCategoryAutoScroll()"
+  >
+    @for (category of categories; track category.slug) {
+      <a
+        class="shop-category-card"
+        [routerLink]="['/shop']"
+        [queryParams]="{ subcategory: category.slug }"
+        [attr.aria-label]="'Shop ' + category.name"
+      >
+        <div class="shop-category-card__image-wrap">
+
+          <img
+            [src]="category.image"
+            [alt]="category.name"
+            class="shop-category-card__image"
+            loading="lazy"
+            draggable="false"
+          />
+
+          <span class="shop-category-card__label">
+            {{ category.name }}
+          </span>
+
+          <span class="shop-category-card__arrow" aria-hidden="true">
+            <i class="fa-solid fa-arrow-right"></i>
+          </span>
+
+        </div>
+      </a>
+    }
+  </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- AI STYLE SEARCH -->
+
+<section class="ai-style" aria-labelledby="ai-style-title">
+
+  <picture class="ai-style__visual" aria-hidden="true">
+    <source
+      media="(max-width: 767px)"
+      srcset="/images/ai-search-mobile-bg.png"
+      type="image/webp"
+    />
+
+    <img
+      src="/images/ai-search-desktop-bg.png"
+      alt=""
+      loading="lazy"
+      draggable="false"
+    />
+  </picture>
+
+  <div class="ai-style__overlay"></div>
+
+  <div class="ai-style__content">
+
+    <p class="ai-style__eyebrow">AI STYLE SEARCH</p>
+
+    <h2 id="ai-style-title" class="ai-style__title">
+      Find Your <br> Next Look with <span>AI</span>
+    </h2>
+
+    <p class="ai-style__description">
+      Describe what you're looking for, upload a photo, or just
+      say your vibe. We'll find the perfect styles for you.
+    </p>
+
+    <div class="ai-style__actions">
+
+      <!-- Search input -->
+      <form
+        class="ai-style__search"
+        role="search"
+        (submit)="submitAiSearch(aiQuery.value, $event)"
+      >
+        <i
+          class="fa-solid fa-magnifying-glass"
+          aria-hidden="true"
+        ></i>
+
+        <input
+          #aiQuery
+          type="search"
+          name="aiSearchQuery"
+          placeholder="e.g. white oversized shirt under 1000"
+          aria-label="Describe your outfit"
+          autocomplete="off"
+        />
+
+        <button
+          type="submit"
+          class="ai-style__search-submit"
+          aria-label="Search"
+        >
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+      </form>
+
+      <!-- Image upload -->
+      <input
+        #aiImageInput
+        type="file"
+        class="ai-style__file-input"
+        accept="image/*"
+        (change)="onAiImageSelected($event)"
+      />
+
+      <button
+        type="button"
+        class="ai-style__action-button"
+        (click)="aiImageInput.click()"
+      >
+        <i class="fa-regular fa-image" aria-hidden="true"></i>
+        <span>Upload Image</span>
+      </button>
+
+      <!-- Example prompt -->
+      <button
+        type="button"
+        class="ai-style__action-button"
+        (click)="tryAiExample(aiQuery)"
+      >
+        <i class="fa-regular fa-lightbulb" aria-hidden="true"></i>
+        <span>Try Example</span>
+      </button>
+
+    </div>
+
+    <p
+      class="ai-style__message"
+      aria-live="polite"
+      [hidden]="!aiSearchMessage"
+    >
+      {{ aiSearchMessage }}
+    </p>
+
+  </div>
+</section>

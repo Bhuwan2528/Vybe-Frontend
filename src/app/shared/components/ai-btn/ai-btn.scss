@@ -1,0 +1,70 @@
+
+:host {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 1000;
+}
+
+.ai-float-btn {
+  width: 62px;
+  height: 62px;
+  border: 2px solid #d6ff58;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #d6ff58;
+  background: #0f0f0f;
+  cursor: pointer;
+  box-shadow: 0 0 0 6px #d6ff5820, 0 0 24px #d6ff5870;
+  animation: ai-pulse 2.4s ease-in-out infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ai-float-btn svg {
+  width: 27px;
+  height: 27px;
+}
+
+.ai-float-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 9px #d6ff5825, 0 0 32px #d6ff58a0;
+}
+
+.ai-float-btn:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 4px;
+}
+
+@keyframes ai-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 5px #d6ff5818, 0 0 18px #d6ff5850;
+  }
+
+  50% {
+    box-shadow: 0 0 0 9px #d6ff5825, 0 0 28px #d6ff5880;
+  }
+}
+
+@media (max-width: 600px) {
+  :host {
+    right: 16px;
+    bottom: 20px;
+  }
+
+  .ai-float-btn {
+    width: 54px;
+    height: 54px;
+  }
+
+  .ai-float-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-float-btn {
+    animation: none;
+  }
+}

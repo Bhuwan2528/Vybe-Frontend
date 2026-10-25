@@ -1,0 +1,315 @@
+
+<main class="auth-page">
+
+  <!-- LEFT: BRAND ARTWORK -->
+
+  <section class="auth-visual" aria-label="VYBE streetwear campaign">
+
+    <picture class="auth-visual__picture">
+      <source
+        media="(max-width: 767px)"
+        srcset="/images/mobile-auth-bg.png"
+        type="image/webp"
+      />
+
+      <img
+        src="/images/desktop-auth-bg.png"
+        alt="VYBE streetwear campaign"
+        fetchpriority="high"
+      />
+    </picture>
+
+  </section>
+
+
+  <!-- RIGHT: AUTHENTICATION -->
+
+  <section class="auth-panel">
+
+    <div class="auth-card">
+
+      <!-- HEADING -->
+
+      <div class="auth-card__heading">
+
+        <div class="auth-card__heading-row">
+
+          <p class="auth-card__eyebrow">
+            {{
+              otpStep
+                ? 'SECURE VERIFICATION'
+                : isSignup
+                  ? 'JOIN THE VYBE'
+                  : 'WELCOME BACK'
+            }}
+          </p>
+
+          <button
+            *ngIf="otpStep"
+            type="button"
+            class="auth-back"
+            (click)="changeNumber()"
+          >
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            Back
+          </button>
+
+        </div>
+
+        <h1>
+          {{
+            otpStep
+              ? 'Verify Your Number'
+              : isSignup
+                ? 'Create Your Account'
+                : 'Welcome Back'
+          }}
+        </h1>
+
+        <p class="auth-card__description">
+          {{
+            otpStep
+              ? 'Enter the 6-digit code to continue your VYBE journey.'
+              : isSignup
+                ? 'Create your account and discover your everyday style.'
+                : 'Sign in to your VYBE account'
+          }}
+        </p>
+
+        <span class="auth-card__accent"></span>
+
+      </div>
+
+
+      <!-- MOBILE NUMBER FORM -->
+
+      <form
+        *ngIf="!otpStep"
+        class="auth-form"
+        (ngSubmit)="requestOtp()"
+        novalidate
+      >
+
+        <div class="auth-field">
+
+          <label for="auth-mobile">Mobile Number</label>
+
+          <div class="auth-input">
+
+            <i
+              class="fa-solid fa-mobile-screen-button"
+              aria-hidden="true"
+            ></i>
+
+            <span class="auth-input__country">+91</span>
+
+            <span class="auth-input__divider"></span>
+
+            <input
+              id="auth-mobile"
+              type="tel"
+              name="mobileNumber"
+              [(ngModel)]="mobileNumber"
+              (input)="onMobileInput($event)"
+              inputmode="numeric"
+              autocomplete="tel-national"
+              placeholder="Enter your mobile number"
+              maxlength="10"
+              required
+            />
+
+          </div>
+
+          <p class="auth-field__help">
+            We'll use your number to securely access your account.
+          </p>
+
+        </div>
+
+        <button type="submit" class="auth-submit">
+          <span>
+            {{ isSignup ? 'Verify Number & Continue' : 'Verify Number' }}
+          </span>
+
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+
+      </form>
+
+
+      <!-- OTP FORM -->
+
+      <form
+        *ngIf="otpStep"
+        class="auth-form"
+        (ngSubmit)="verifyOtp()"
+        novalidate
+      >
+
+        <div class="auth-otp-meta">
+
+          <div>
+            <span>OTP sent to</span>
+            <strong>+91 {{ mobileNumber }}</strong>
+          </div>
+
+          <button
+            type="button"
+            class="auth-change-number"
+            (click)="changeNumber()"
+          >
+            Change
+          </button>
+
+        </div>
+
+        <div class="auth-field">
+
+          <label for="auth-otp">Enter OTP</label>
+
+          <div class="auth-input">
+
+            <i
+              class="fa-solid fa-shield-halved"
+              aria-hidden="true"
+            ></i>
+
+            <input
+              id="auth-otp"
+              type="text"
+              name="otp"
+              [(ngModel)]="otp"
+              (input)="onOtpInput($event)"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              placeholder="Enter 6-digit OTP"
+              maxlength="6"
+              required
+            />
+
+          </div>
+
+          <p class="auth-field__help">
+            Enter the verification code to continue.
+          </p>
+
+        </div>
+
+        <button type="submit" class="auth-submit">
+          <span>
+            {{ isSignup ? 'Verify & Create Account' : 'Verify & Sign In' }}
+          </span>
+
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+
+        <p class="auth-resend">
+          Didn't receive the code?
+          <span>Resend OTP</span>
+        </p>
+
+      </form>
+
+
+      <!-- VALIDATION / DEMO MESSAGE -->
+
+      <p
+        class="auth-feedback"
+        *ngIf="feedback"
+        [class.is-error]="feedbackType === 'error'"
+        [class.is-success]="feedbackType === 'success'"
+        aria-live="polite"
+      >
+        <i
+          class="fa-solid"
+          [class.fa-circle-exclamation]="feedbackType === 'error'"
+          [class.fa-circle-check]="feedbackType === 'success'"
+          [class.fa-circle-info]="feedbackType === 'info'"
+          aria-hidden="true"
+        ></i>
+
+        {{ feedback }}
+      </p>
+
+
+      <!-- DIVIDER -->
+
+      <div class="auth-divider">
+        <span></span>
+        <p>OR</p>
+        <span></span>
+      </div>
+
+
+      <!-- GOOGLE / APPLE: VISUAL ONLY -->
+
+      <div class="auth-social">
+
+        <button type="button">
+          <i class="fa-brands fa-google auth-social__google"
+             aria-hidden="true"></i>
+
+          Continue with Google
+        </button>
+
+        <button type="button">
+          <i class="fa-brands fa-apple"
+             aria-hidden="true"></i>
+
+          Continue with Apple
+        </button>
+
+      </div>
+
+
+      <!-- LOGIN / SIGNUP SWITCH -->
+
+      <div class="auth-switch" *ngIf="!isSignup">
+        <span>Don't have an account?</span>
+        <a routerLink="/signup">Create one</a>
+      </div>
+
+      <div class="auth-switch" *ngIf="isSignup">
+        <span>Already have an account?</span>
+        <a routerLink="/login">Sign in</a>
+      </div>
+
+    </div>
+
+
+    <!-- BENEFITS -->
+
+    <div class="auth-benefits">
+
+      <div class="auth-benefit">
+        <i class="fa-solid fa-truck-fast" aria-hidden="true"></i>
+
+        <div>
+          <strong>Free Shipping</strong>
+          <span>On orders above ₹999</span>
+        </div>
+      </div>
+
+      <div class="auth-benefit">
+        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+
+        <div>
+          <strong>Easy Returns</strong>
+          <span>7-day return policy</span>
+        </div>
+      </div>
+
+      <div class="auth-benefit">
+        <i class="fa-solid fa-lock" aria-hidden="true"></i>
+
+        <div>
+          <strong>Secure Shopping</strong>
+          <span>Shop with confidence</span>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>

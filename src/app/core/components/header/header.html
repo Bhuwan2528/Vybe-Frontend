@@ -1,0 +1,291 @@
+
+<header
+  class="vybe-header"
+  [class.vybe-header--solid]="isHeaderSolid"
+  [class.vybe-header--transparent]="!isHeaderSolid"
+>
+  <div class="vybe-header__inner">
+
+    <!-- Mobile hamburger -->
+    <button
+      type="button"
+      class="vybe-icon-button vybe-header__mobile-menu"
+      aria-label="Open menu"
+      aria-controls="vybeMobileNav"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#vybeMobileNav"
+    >
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <!-- Brand logo -->
+    <a
+      routerLink="/"
+      class="vybe-header__brand"
+      aria-label="VYBE home"
+    >
+      <img
+        *ngIf="!logoFailed; else logoFallback"
+        src="/logo.png"
+        alt="VYBE"
+        class="vybe-header__logo"
+        (error)="onLogoError()"
+      />
+
+      <ng-template #logoFallback>
+        <span class="vybe-header__wordmark">
+          VYBE<span>.</span>
+        </span>
+      </ng-template>
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="vybe-header__nav" aria-label="Main navigation">
+      <a
+        routerLink="/shop"
+        [queryParams]="{ category: 'Men' }"
+      >Men</a>
+
+      <a
+        routerLink="/shop"
+        [queryParams]="{ sort: 'newest' }"
+      >New In</a>
+
+      <a
+        routerLink="/account"
+        [queryParams]="{ tab: 'collections' }"
+      >Collections</a>
+
+      <a routerLink="/outfit-matcher">AI Stylist</a>
+
+      <a routerLink="/about">About</a>
+    </nav>
+
+    <!-- Desktop search -->
+    <form
+      class="vybe-search vybe-header__desktop-search"
+      role="search"
+      (ngSubmit)="submitSearch()"
+    >
+      <i
+        class="fa-solid fa-magnifying-glass vybe-search__icon"
+        aria-hidden="true"
+      ></i>
+
+      <input
+        type="search"
+        name="desktopSearch"
+        [(ngModel)]="searchQuery"
+        placeholder="Search for shirts, cargos, hoodies..."
+        aria-label="Search products"
+        autocomplete="off"
+      />
+
+      <button
+        type="submit"
+        class="vybe-search__submit"
+        aria-label="Submit search"
+        [disabled]="searchSubmitting || !searchQuery.trim()"
+      >
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </form>
+
+    <!-- Header actions -->
+    <div class="vybe-header__actions">
+
+      <!-- Mobile search toggle -->
+      <button
+        type="button"
+        class="vybe-icon-button vybe-header__mobile-only"
+        aria-label="Toggle search"
+        [attr.aria-expanded]="mobileSearchOpen"
+        (click)="toggleMobileSearch()"
+      >
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
+
+      <!-- Wishlist: desktop -->
+      <a
+        routerLink="/account"
+        [queryParams]="{ tab: 'collections' }"
+        class="vybe-icon-button vybe-header__desktop-only"
+        aria-label="Saved collections"
+      >
+        <i class="fa-regular fa-heart" aria-hidden="true"></i>
+      </a>
+
+      <!-- Wishlist: mobile -->
+      <a
+        routerLink="/account"
+        [queryParams]="{ tab: 'collections' }"
+        class="vybe-icon-button vybe-header__mobile-only"
+        aria-label="Saved collections"
+      >
+        <i class="fa-regular fa-heart" aria-hidden="true"></i>
+      </a>
+
+      <!-- Cart -->
+      <a
+        routerLink="/cart"
+        class="vybe-icon-button vybe-header__cart"
+        aria-label="Shopping cart"
+      >
+        <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+
+        <span
+          class="vybe-header__count"
+          *ngIf="cartCount > 0"
+        >{{ cartCount }}</span>
+      </a>
+
+      <!-- Desktop profile -->
+      <a
+        routerLink="/account"
+        class="vybe-icon-button vybe-header__desktop-only vybe-header__profile"
+        aria-label="My account"
+      >
+        <i class="fa-regular fa-user" aria-hidden="true"></i>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Expandable mobile search -->
+  <div
+    class="vybe-header__mobile-search-panel"
+    *ngIf="mobileSearchOpen"
+  >
+    <form
+      class="vybe-search"
+      role="search"
+      (ngSubmit)="submitSearch()"
+    >
+      <i
+        class="fa-solid fa-magnifying-glass vybe-search__icon"
+        aria-hidden="true"
+      ></i>
+
+      <input
+        type="search"
+        name="mobileSearch"
+        [(ngModel)]="searchQuery"
+        placeholder="Search shirts, cargos, hoodies..."
+        aria-label="Search products"
+        autocomplete="off"
+      />
+
+      <button
+        type="submit"
+        class="vybe-search__submit"
+        aria-label="Submit search"
+        [disabled]="searchSubmitting || !searchQuery.trim()"
+      >
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </form>
+  </div>
+</header>
+
+<!-- Reserve space on non-home pages -->
+<div
+  class="vybe-header-spacer"
+  [class.vybe-header-spacer--home]="isHomePage"
+></div>
+
+<!-- Mobile offcanvas menu -->
+<div
+  class="offcanvas offcanvas-start vybe-mobile-nav"
+  tabindex="-1"
+  id="vybeMobileNav"
+  aria-labelledby="vybeMobileNavLabel"
+>
+  <div class="offcanvas-header vybe-mobile-nav__header">
+
+    <a
+      routerLink="/"
+      class="vybe-mobile-nav__brand"
+      data-bs-dismiss="offcanvas"
+      aria-label="VYBE home"
+    >
+      <img
+        *ngIf="!logoFailed; else mobileLogoFallback"
+        src="/logo.png"
+        alt="VYBE"
+        (error)="onLogoError()"
+      />
+
+      <ng-template #mobileLogoFallback>
+        <span class="vybe-header__wordmark">
+          VYBE<span>.</span>
+        </span>
+      </ng-template>
+    </a>
+
+    <button
+      type="button"
+      class="vybe-icon-button"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close menu"
+    >
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+
+  </div>
+
+  <div class="offcanvas-body vybe-mobile-nav__body">
+    <h2 id="vybeMobileNavLabel" class="visually-hidden">
+      VYBE navigation
+    </h2>
+
+    <nav class="vybe-mobile-nav__links">
+      <a
+        routerLink="/shop"
+        [queryParams]="{ category: 'Men' }"
+        data-bs-dismiss="offcanvas"
+      >
+        <span>Men</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+
+      <a
+        routerLink="/shop"
+        [queryParams]="{ sort: 'newest' }"
+        data-bs-dismiss="offcanvas"
+      >
+        <span>New In</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+
+      <a
+        routerLink="/account"
+        [queryParams]="{ tab: 'collections' }"
+        data-bs-dismiss="offcanvas"
+      >
+        <span>Collections</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+
+      <a
+        routerLink="/outfit-matcher"
+        data-bs-dismiss="offcanvas"
+      >
+        <span>AI Stylist</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+
+      <a
+        routerLink="/about"
+        data-bs-dismiss="offcanvas"
+      >
+        <span>About</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </nav>
+
+    <div class="vybe-mobile-nav__note">
+      <span>NOT JUST CLOTHES</span>
+      <p>Discover your style. Find your VYBE.</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,364 @@
+
+@use '../../../../variables' as v;
+
+/* FOOTER */
+
+:host {
+  display: block;
+}
+
+.vybe-footer {
+  padding: 34px 0 18px;
+  background: #0C100D;
+  color: v.$color-bone;
+}
+
+.vybe-footer__container {
+  width: calc(100% - 80px);
+  max-width: 1440px;
+  margin: auto;
+}
+
+/* DESKTOP LAYOUT */
+
+.vybe-footer__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.7fr 0.9fr 0.8fr 1.3fr;
+  gap: 36px;
+  padding-bottom: 26px;
+}
+
+.vybe-footer__brand {
+  padding-right: 12px;
+}
+
+.vybe-footer__logo {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: v.$color-bone;
+  font-family: v.$font-heading;
+  font-size: 38px;
+  font-weight: v.$font-bold;
+  letter-spacing: -1.5px;
+  line-height: 1;
+}
+
+.vybe-footer__brand p {
+  margin: 0;
+  color: rgba(245, 242, 234, 0.7);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* COLUMN TITLES */
+
+.vybe-footer__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: v.$color-bone;
+  font-family: v.$font-heading;
+  font-size: 18px;
+  font-weight: v.$font-semibold;
+  text-align: left;
+  cursor: default;
+}
+
+.vybe-footer__toggle i {
+  display: none;
+}
+
+/* FOOTER LINKS */
+
+.vybe-footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.vybe-footer__links a {
+  color: rgba(245, 242, 234, 0.7);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: color 150ms ease;
+}
+
+.vybe-footer__links a:hover {
+  color: v.$color-volt;
+}
+
+/* STAY CONNECTED */
+
+.vybe-footer__connected-content > p {
+  margin: 0 0 14px;
+  color: rgba(245, 242, 234, 0.7);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.vybe-footer__newsletter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 46px;
+  padding: 4px;
+  border: 1px solid rgba(245, 242, 234, 0.15);
+  border-radius: 8px;
+  background: rgba(245, 242, 234, 0.1);
+}
+
+.vybe-footer__newsletter input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 0 9px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: v.$color-bone;
+  font-family: v.$font-body;
+  font-size: 14px;
+}
+
+.vybe-footer__newsletter input::placeholder {
+  color: rgba(245, 242, 234, 0.5);
+}
+
+.vybe-footer__newsletter button {
+  display: flex;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: v.$color-bone;
+  color: v.$color-graphite;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.vybe-footer__newsletter button:hover {
+  background: v.$color-volt;
+}
+
+.vybe-footer__message {
+  margin-top: 8px !important;
+  color: v.$color-volt !important;
+  font-size: 11px !important;
+}
+
+/* SOCIAL ICONS */
+
+.vybe-footer__social {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.vybe-footer__social--desktop {
+  margin-top: 18px;
+}
+
+.vybe-footer__social--mobile {
+  display: none;
+}
+
+.vybe-footer__social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 24px;
+  color: v.$color-bone;
+  font-size: 20px;
+  transition: color 150ms ease;
+}
+
+.vybe-footer__social a:hover {
+  color: v.$color-volt;
+}
+
+/* COPYRIGHT */
+
+.vybe-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(245, 242, 234, 0.13);
+}
+
+.vybe-footer__bottom p {
+  margin: 0;
+  color: rgba(245, 242, 234, 0.65);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.vybe-footer__heart {
+  margin-inline: 3px;
+  color: #FF4545;
+  font-size: 13px;
+}
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+  .vybe-footer__container {
+    width: calc(100% - 48px);
+  }
+
+  .vybe-footer__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .vybe-footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  .vybe-footer__connected {
+    grid-column: span 1;
+  }
+}
+
+/* MOBILE ACCORDION */
+
+@media (max-width: 767px) {
+  .vybe-footer {
+    margin: 12px;
+    padding: 24px 20px 17px;
+    border: 1px solid rgba(245, 242, 234, 0.08);
+    border-radius: 16px;
+  }
+
+  .vybe-footer__container {
+    width: 100%;
+  }
+
+  .vybe-footer__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 0;
+  }
+
+  .vybe-footer__brand {
+    padding: 0 0 17px;
+  }
+
+  .vybe-footer__logo {
+    margin-bottom: 7px;
+    font-size: 32px;
+  }
+
+  .vybe-footer__brand p {
+    font-size: 12px;
+  }
+
+  .vybe-footer__group {
+    border-top: 1px solid rgba(245, 242, 234, 0.12);
+  }
+
+  .vybe-footer__toggle {
+    min-height: 44px;
+    margin: 0;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .vybe-footer__toggle i {
+    display: block;
+    color: rgba(245, 242, 234, 0.75);
+    font-size: 12px;
+    transition: transform 150ms ease;
+  }
+
+  .vybe-footer__group.is-open .vybe-footer__toggle i {
+    transform: rotate(180deg);
+  }
+
+  .vybe-footer__links,
+  .vybe-footer__connected-content {
+    display: none;
+    padding: 0 0 15px;
+  }
+
+  .vybe-footer__group.is-open .vybe-footer__links,
+  .vybe-footer__group.is-open .vybe-footer__connected-content {
+    display: flex;
+  }
+
+  .vybe-footer__links {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .vybe-footer__links a {
+    font-size: 12px;
+  }
+
+  .vybe-footer__connected-content {
+    flex-direction: column;
+  }
+
+  .vybe-footer__connected-content > p {
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+
+  .vybe-footer__newsletter {
+    height: 44px;
+  }
+
+  /* Social icons stay visible outside the accordions */
+
+  .vybe-footer__social--desktop {
+    display: none;
+  }
+
+  .vybe-footer__social--mobile {
+    display: flex;
+    gap: 22px;
+    padding: 17px 0 20px;
+  }
+
+  .vybe-footer__social a {
+    width: 24px;
+    font-size: 21px;
+  }
+
+  /* Stack the bottom text on mobile */
+
+  .vybe-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding-top: 15px;
+  }
+
+  .vybe-footer__bottom p {
+    font-size: 10px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 360px) {
+  .vybe-footer {
+    margin: 8px;
+    padding-inline: 16px;
+  }
+}

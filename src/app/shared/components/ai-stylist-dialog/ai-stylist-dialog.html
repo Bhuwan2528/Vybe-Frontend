@@ -1,0 +1,174 @@
+
+<section class="ai-dialog" aria-labelledby="ai-dialog-title">
+
+  <!-- HEADER -->
+
+  <header class="ai-dialog__header">
+
+    <div class="ai-dialog__icon" aria-hidden="true">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </div>
+
+    <div class="ai-dialog__heading">
+      <h2 id="ai-dialog-title">AI Stylist</h2>
+      <p>Upload a photo and tell us what you're looking for.</p>
+    </div>
+
+    <button
+      type="button"
+      class="ai-dialog__close"
+      aria-label="Close dialog"
+      (click)="close()"
+    >
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+
+  </header>
+
+
+  <!-- FORM -->
+
+  <form (ngSubmit)="continue()">
+
+    <!-- IMAGE UPLOAD -->
+
+    <div
+      class="ai-dialog__upload"
+      [class.has-image]="previewUrl"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+    >
+
+      <input
+        #fileInput
+        type="file"
+        class="ai-dialog__file-input"
+        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+        (change)="onFileChange($event)"
+      />
+
+      <!-- EMPTY STATE -->
+
+      <div class="ai-dialog__empty" *ngIf="!previewUrl">
+
+        <i class="fa-regular fa-image" aria-hidden="true"></i>
+
+        <h3>Upload your photo</h3>
+
+        <p>JPG, PNG or WEBP · Max 5 MB</p>
+
+        <button
+          type="button"
+          class="ai-dialog__choose"
+          (click)="fileInput.click()"
+        >
+          Choose Image
+        </button>
+
+        <span class="ai-dialog__drop-hint">
+          Or drag and drop your image here
+        </span>
+
+      </div>
+
+
+      <!-- SELECTED IMAGE PREVIEW -->
+
+      <div class="ai-dialog__preview" *ngIf="previewUrl">
+
+        <img
+          [src]="previewUrl"
+          alt="Selected outfit preview"
+        />
+
+        <div class="ai-dialog__image-details">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+
+          <span>{{ selectedImage?.name }}</span>
+        </div>
+
+        <div class="ai-dialog__image-actions">
+
+          <button
+            type="button"
+            class="ai-dialog__choose"
+            (click)="fileInput.click()"
+          >
+            Change Image
+          </button>
+
+          <button
+            type="button"
+            class="ai-dialog__remove"
+            (click)="removeImage()"
+          >
+            Remove
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- PROMPT -->
+
+    <div class="ai-dialog__prompt">
+
+      <label for="ai-dialog-prompt">
+        What are you looking for?
+      </label>
+
+      <textarea
+        id="ai-dialog-prompt"
+        name="prompt"
+        [(ngModel)]="prompt"
+        maxlength="300"
+        placeholder="e.g. streetwear for college, casual vibe..."
+      ></textarea>
+
+      <span class="ai-dialog__counter">
+        {{ prompt.length }}/300
+      </span>
+
+    </div>
+
+
+    <!-- VALIDATION FEEDBACK -->
+
+    <p
+      class="ai-dialog__feedback"
+      *ngIf="feedback"
+      aria-live="polite"
+    >
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      {{ feedback }}
+    </p>
+
+
+    <!-- ACTIONS -->
+
+    <footer class="ai-dialog__footer">
+
+      <button
+        type="button"
+        class="ai-dialog__cancel"
+        (click)="close()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        class="ai-dialog__next"
+      >
+        Next
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </button>
+
+    </footer>
+
+  </form>
+
+</section>
